@@ -6,280 +6,159 @@
     <title>惟元蔘藥｜草本靈魂檢測</title>
     <style>
         :root {
-            --primary: #4F6B58; /* 惟元綠 */
-            --secondary: #D4A373; /* 大地棕 */
-            --bg: #F5F5DC; /* 米白底 */
+            --primary: #4F6B58;
+            --secondary: #D4A373;
+            --bg: #F5F5DC;
             --white: #FFFFFF;
             --text: #3E4A3D;
             --accent: #E9EDC6;
         }
-
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'PingFang TC', 'Noto Sans TC', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
-        
-        #quiz-app { width: 100%; max-width: 450px; background: var(--white); padding: 30px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); align-self: center; position: relative; overflow: hidden; }
-
-        /* 進度條 */
+        body { font-family: 'PingFang TC', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
+        #quiz-app { width: 100%; max-width: 450px; background: var(--white); padding: 30px; border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); align-self: center; }
         .progress-container { width: 100%; height: 6px; background: #eee; border-radius: 3px; margin-bottom: 30px; }
         .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: 0.4s ease; }
-
-        /* 題目卡片 */
         .q-card { display: none; }
         .q-card.active { display: block; animation: slideIn 0.4s ease-out; }
-        
         h2 { font-size: 1.3rem; line-height: 1.5; margin-bottom: 25px; color: var(--primary); font-weight: 700; }
-        .btn-option { display: block; width: 100%; padding: 18px 22px; margin-bottom: 15px; border: 1.5px solid #F0F0F0; border-radius: 18px; background: #FAFAFA; cursor: pointer; transition: 0.2s; font-size: 1rem; text-align: left; line-height: 1.4; color: var(--text); }
-        .btn-option:active { background-color: var(--accent); border-color: var(--primary); transform: translateY(2px); }
-
-        /* 結果頁面 */
-        #result-page { display: none; text-align: center; animation: fadeIn 0.8s; }
-        .result-header { font-size: 0.9rem; color: var(--secondary); font-weight: bold; margin-bottom: 5px; letter-spacing: 1px; }
-        .result-name { font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 20px; }
-        .result-img { width: 200px; height: 200px; background: var(--bg); border-radius: 50%; margin: 0 auto 25px; display: flex; align-items: center; justify-content: center; font-size: 90px; border: 8px solid #FFF; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
-
-        /* 數值條 */
-        .stat-box { text-align: left; margin: 30px 0; }
-        .stat-row { margin-bottom: 15px; }
-        .stat-label { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 8px; font-weight: bold; }
-        .bar-outer { width: 100%; height: 28px; background: #F0F0F0; border-radius: 14px; overflow: hidden; }
-        .bar-inner { height: 100%; width: 0%; transition: 1.5s cubic-bezier(0.1, 0.5, 0.5, 1); }
-
-        .forest-info { font-size: 0.85rem; color: #888; margin-bottom: 25px; }
-        .advice-card { text-align: left; background: #FDFDF9; border-left: 5px solid var(--primary); padding: 20px; border-radius: 0 15px 15px 0; font-size: 0.95rem; line-height: 1.8; margin-bottom: 30px; box-shadow: 2px 2px 10px rgba(0,0,0,0.02); }
-
-        .btn-share { background: var(--primary); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-size: 1.1rem; font-weight: bold; cursor: pointer; margin-bottom: 15px; }
-        .promo-tag { background: #FFF4E6; color: #D4A373; padding: 15px; border-radius: 12px; border: 2px dashed #D4A373; font-weight: bold; font-size: 1rem; }
-
-        @keyframes slideIn { from { opacity: 0; transform: translateX(30px); } to { opacity: 1; transform: translateX(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .btn-option { display: block; width: 100%; padding: 18px 22px; margin-bottom: 15px; border: 1.5px solid #F0F0F0; border-radius: 18px; background: #FAFAFA; cursor: pointer; transition: 0.2s; font-size: 1rem; text-align: left; color: var(--text); }
+        .btn-option:hover { background-color: var(--accent); }
+        #result-page { display: none; text-align: center; }
+        .result-name { font-size: 2rem; font-weight: 800; color: var(--primary); margin: 15px 0; }
+        .result-img { width: 180px; height: 180px; background: var(--bg); border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; font-size: 80px; border: 6px solid #FFF; }
+        .stat-box { text-align: left; margin: 25px 0; }
+        .bar-outer { width: 100%; height: 24px; background: #F0F0F0; border-radius: 12px; margin: 8px 0 15px; overflow: hidden; }
+        .bar-inner { height: 100%; width: 0%; transition: 1.5s ease; }
+        .advice-card { text-align: left; background: #FDFDF9; border-left: 5px solid var(--primary); padding: 15px; border-radius: 0 15px 15px 0; font-size: 0.95rem; line-height: 1.7; }
+        .btn-retry { background: var(--primary); color: white; border: none; padding: 18px; width: 100%; border-radius: 15px; font-weight: bold; margin-top: 20px; cursor: pointer; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
     </style>
 </head>
 <body>
 
 <div id="quiz-app">
-    <div id="quiz-header">
+    <div id="quiz-ui">
         <div class="progress-container"><div class="progress-fill" id="progress"></div></div>
+        <div id="quiz-body"></div>
     </div>
 
-    <div id="quiz-body"></div>
-
     <div id="result-page">
-        <div class="result-header" id="res-rarity">森林分布率</div>
-        <div class="result-name" id="res-name">草本靈魂</div>
+        <div style="color:var(--secondary); font-weight:bold;">你的草本靈魂是</div>
+        <div class="result-name" id="res-name">載入中</div>
         <div class="result-img" id="res-emoji">🌿</div>
         
         <div class="stat-box">
-            <div class="stat-row">
-                <div class="stat-label"><span id="main-name">主要成分</span><span id="main-val">0%</span></div>
-                <div class="bar-outer"><div class="bar-inner" id="main-bar" style="background:var(--primary)"></div></div>
+            <div style="display:flex; justify-content:space-between; font-weight:bold;">
+                <span id="main-label">主要構成</span><span id="main-pct">0%</span>
             </div>
-            <div class="stat-row">
-                <div class="stat-label"><span id="sub-name">次要成分</span><span id="sub-val">0%</span></div>
-                <div class="bar-outer"><div class="bar-inner" id="sub-bar" style="background:var(--secondary)"></div></div>
+            <div class="bar-outer"><div class="bar-inner" id="main-bar" style="background:var(--primary)"></div></div>
+            
+            <div style="display:flex; justify-content:space-between; font-weight:bold;">
+                <span id="sub-label">次要構成</span><span id="sub-pct">0%</span>
             </div>
+            <div class="bar-outer"><div class="bar-inner" id="sub-bar" style="background:var(--secondary)"></div></div>
         </div>
 
-        <div class="forest-info" id="res-forest">你與 15% 的人擁有相似的頻率</div>
-
-        <div class="advice-card">
-            <strong>主編悄悄話：</strong><br>
-            <span id="res-advice">載入中...</span>
-        </div>
-
-        <button class="btn-share" onclick="location.reload()">重新測驗</button>
-        <div class="promo-tag">🎁 官網領獎折扣碼：WEIYUAN88</div>
+        <div class="advice-card" id="res-advice"></div>
+        <button class="btn-retry" onclick="location.reload()">重新測驗</button>
+        <p style="color:#D4A373; font-weight:bold; margin-top:20px;">🎁 折扣碼：WEIYUAN88</p>
     </div>
 </div>
 
 <script>
-    // 1. 題庫設定 (高對比邏輯)
     const questions = [
-        {
-            q: "下午 3:30 的辦公室，你最誠實的身體感受是？",
-            options: [
-                { t: "說話變費力，只想安靜當個廢物", s: { qi: 4 } },
-                { t: "胸口悶想大口嘆氣，坐不住想抖動", s: { yu: 4 } },
-                { t: "眼睛乾澀到想流淚，掌心發燙浮躁", s: { yin: 4 } },
-                { t: "思緒清晰，不需要靠咖啡續命", s: { ping: 4 } }
-            ]
-        },
-        {
-            q: "在冷氣房待了一整天，下班時你的狀態是？",
-            options: [
-                { t: "手腳凍得像冰棒，連關節都感覺僵硬", s: { yang: 4, heat: -1 } },
-                { t: "噴嚏鼻水大爆發，或是皮膚突然乾癢", s: { special: 4 } },
-                { t: "全身出油嚴重，像從油鍋撈出來一樣", s: { heat: 4, yang: -1 } }
-            ]
-        },
-        {
-            q: "剛吃完一頓豐盛大餐，你的腸胃會誠實告訴你：",
-            options: [
-                { t: "肚子脹得像氣球，感覺食物卡著不動", s: { qi: 4 } },
-                { t: "隔天口苦口臭嚴重，立刻長出壓力痘", s: { heat: 4 } },
-                { t: "消化神速，一小時後胃部恢復輕盈", s: { ping: 4 } }
-            ]
-        },
-        {
-            q: "面對一杯滿滿冰塊的飲料，你的反應是？",
-            options: [
-                { t: "喝完沒多久，肚子就隱痛想找廁所", s: { yang: 4 } },
-                { t: "喝完還是口渴，感覺水沒吸收到靈魂", s: { yin: 4 } },
-                { t: "喉嚨黏膩感加重，總覺得有痰吐不乾淨", s: { tan: 4 } }
-            ]
-        },
-        {
-            q: "早起睜開眼的那一刻，你的第一個感覺是？",
-            options: [
-                { t: "沈重得像裹著濕毛巾，臉部浮腫感", s: { tan: 4 } },
-                { t: "猛然站起會眼冒金星，伴隨心慌感", s: { xue: 4 } },
-                { t: "雖然睡飽了，但電力顯示只有 5%", s: { qi: 4 } }
-            ]
-        },
-        {
-            q: "深夜躺在床上準備入睡時，你的大腦通常在？",
-            options: [
-                { t: "瘋狂重播對話、煩惱明天，停不下來", s: { yu: 4 } },
-                { t: "夢多到像看連環影集，醒來心神不寧", s: { xue: 4 } },
-                { t: "意識斷片，五分鐘內進入深度睡眠", s: { ping: 4 } }
-            ]
-        },
-        {
-            q: "到了晚上換鞋時，你對腳部的觀察是？",
-            options: [
-                { t: "襪子勒痕深到消不掉，鞋子變得很緊", s: { tan: 4 } },
-                { t: "容易出現「不知道哪來的」青紫色瘀青", s: { xue: 4, yu: 1 } },
-                { t: "腳踝線條分明，完全沒有水腫困擾", s: { ping: 4 } }
-            ]
-        },
-        {
-            q: "你平時「流汗」的狀態，最接近以下哪種？",
-            options: [
-                { t: "稍微動一下就大汗淋漓，甚至坐著也出汗", s: { qi: 4 } },
-                { t: "汗液黏膩汗味重，白衣腋下容易發黃", s: { heat: 4 } },
-                { t: "身體熱烘烘但很難出汗，熱氣鎖在皮膚下", s: { yang: -1, xue: 2 } }
-            ]
-        },
-        {
-            q: "遇到突如其來的壓力時，你的第一反應是？",
-            options: [
-                { t: "喉嚨像被什麼卡住，大聲呼喊卻發不出聲", s: { yu: 4 } },
-                { t: "臉色煞白，手腳冰冷且心慌到手抖", s: { qi: 2, xue: 2 } },
-                { t: "呼吸穩定，能快速冷靜並解決問題", s: { ping: 4 } }
-            ]
-        },
-        {
-            q: "如果用一種自然景觀形容脾氣，你覺得是？",
-            options: [
-                { t: "終日不散的濃霧，細膩但容易陷入憂鬱", s: { yu: 4 } },
-                { t: "隨時爆發的活火山，遇到不爽直接炸開", s: { heat: 4 } },
-                { t: "平靜的湖面，對環境適應力極強", s: { ping: 4 } }
-            ]
-        },
-        {
-            q: "難得進行了一場暢汗淋漓的運動，隔天你是？",
-            options: [
-                { t: "肌肉痠痛僵硬持續3天，感覺循環推不動", s: { xue: 3, yu: 2 } },
-                { t: "累到靈魂出竅，連滑手機都覺得沒力", s: { qi: 5 } },
-                { t: "像排掉了一整桶廢水，整個人史上最輕盈", s: { tan: 4 } }
-            ]
-        },
-        {
-            q: "在運動過程中，哪種情況最常困擾你？",
-            options: [
-                { t: "剛開始5分鐘就氣喘吁吁，耐力是致命傷", s: { qi: 4 } },
-                { t: "暖身要比別人久，否則關節很容易抽筋", s: { yang: 4, xue: 1 } },
-                { t: "身體像過熱引擎，稍微動一下就燥熱難耐", s: { yin: 4, heat: 1 } }
-            ]
-        }
+        { q: "下午 3:30 的辦公室，你最誠實的身體感受是？", 
+          opts: [ {t:"說話變費力，只想安靜當廢物", s:"qi"}, {t:"胸口悶想大口嘆氣，坐不住", s:"yu"}, {t:"眼睛乾澀想流淚，心裡浮躁", s:"yin"}, {t:"思緒清晰，不需要靠咖啡", s:"ping"} ] },
+        { q: "在冷氣房待了一整天，下班時你的狀態是？", 
+          opts: [ {t:"手腳凍得像冰棒，關節僵硬", s:"yang"}, {t:"噴嚏鼻水大爆發，皮膚乾癢", s:"special"}, {t:"全身出油嚴重，感覺油膩", s:"heat"} ] },
+        { q: "剛吃完一頓豐盛大餐，你的腸胃會告訴你：", 
+          opts: [ {t:"肚子脹得像氣球，食物卡著", s:"qi"}, {t:"隔天口苦口臭，立刻長痘", s:"heat"}, {t:"消化神速，一小時後恢復輕盈", s:"ping"} ] },
+        { q: "面對一杯滿滿冰塊的飲料，你的反應是？", 
+          opts: [ {t:"喝完沒多久，肚子隱痛想上廁所", s:"yang"}, {t:"喝完還是口渴，感覺沒吸收", s:"yin"}, {t:"喉嚨黏膩感加重，痰變多了", s:"tan"} ] },
+        { q: "早起睜開眼的那一刻，你的第一個感覺是？", 
+          opts: [ {t:"沈重得像裹著濕毛巾，臉腫感", s:"tan"}, {t:"猛然站起會眼冒金星，心慌感", s:"xue"}, {t:"雖然睡飽了，電力僅剩 5%", s:"qi"} ] },
+        { q: "深夜躺在床上準備入睡時，你的大腦在？", 
+          opts: [ {t:"瘋狂重播對話，煩惱明天之事", s:"yu"}, {t:"夢多到像連環影集，醒來心煩", s:"xue"}, {t:"意識斷片，五分鐘內深度睡眠", s:"ping"} ] },
+        { q: "到了晚上換鞋時，你對腳部的觀察是？", 
+          opts: [ {t:"襪痕深到消不掉，鞋子變緊", s:"tan"}, {t:"出現不明原因的青紫色瘀青", s:"xue"}, {t:"腳踝線條分明，沒有水腫", s:"ping"} ] },
+        { q: "你平時「流汗」的狀態，最接近以下哪種？", 
+          opts: [ {t:"稍微動一下就大汗淋漓", s:"qi"}, {t:"汗液黏膩汗味重，白衣發黃", s:"heat"}, {t:"很難出汗，感覺熱氣鎖在皮膚下", s:"xue"} ] },
+        { q: "遇到突如其來的壓力時，你的第一反應是？", 
+          opts: [ {t:"喉嚨像被卡住，嘆氣連連", s:"yu"}, {t:"臉色煞白，手腳冰冷且心慌手抖", s:"qi"}, {t:"呼吸穩定，能快速冷靜處理", s:"ping"} ] },
+        { q: "如果用一種自然景觀形容脾氣，你覺得是？", 
+          opts: [ {t:"終日不散的濃霧，細膩但憂鬱", s:"yu"}, {t:"隨時爆發的活火山，遇事炸開", s:"heat"}, {t:"平靜的湖面，適應力極強", s:"ping"} ] },
+        { q: "難得進行一場暢汗淋漓的運動，隔天你是？", 
+          opts: [ {t:"肌肉痠痛僵硬持續3天以上", s:"xue"}, {t:"累到靈魂出竅，連滑手機都沒力", s:"qi"}, {t:"像排掉一桶廢水，輕盈極了", s:"tan"} ] },
+        { q: "在運動過程中，哪種情況最常困擾你？", 
+          opts: [ {t:"剛開始5分鐘就氣喘吁吁", s:"qi"}, {t:"暖身要很久，否則容易抽筋", s:"yang"}, {t:"身體像過熱引擎，燥熱難耐", s:"yin"} ] }
     ];
 
-    // 2. 角色資料
     const personas = {
-        ping: { name: "高麗蔘隊長", emoji: "🌲", forest: "5%", advice: "你是極致平衡的靈魂！維持高品質蔘飲與規律運動是你的長青秘訣。" },
-        qi: { name: "元氣黃耆君", emoji: "🔋", forest: "25%", advice: "你的電力容易見底，別再報復性運動。參參元氣茶是你隨身的充電寶。" },
-        yang: { name: "肉桂暖心大叔", emoji: "🔥", forest: "10%", advice: "外冷內熱的你，需要暖身更暖心。冬天多運動曬太陽，讓熱力循環起來。" },
-        yin: { name: "石斛小仙女", emoji: "💧", forest: "12%", advice: "身體正在喊渴，熬夜是大忌。游泳或溫和伸展能幫你鎖住珍貴水分。" },
-        tan: { name: "茯苓除濕官", emoji: "☁️", forest: "15%", advice: "沈重感來自體內積水。多做有氧運動流點微汗，找回輕盈的輪廓。" },
-        heat: { name: "決明子排毒師", emoji: "✨", forest: "5%", advice: "體內火氣大，容易煩躁。爆汗型運動最適合你洩火，記得補水要小口飲。" },
-        xue: { name: "當歸補血員", emoji: "❤️", forest: "8%", advice: "能量燃料不足，站起別太猛。先補足氣血再重訓，臉色才會紅潤有光。" },
-        yu: { name: "薄荷舒壓師", emoji: "🌿", forest: "18%", advice: "壓力都悶在胸口了！慢跑或擴胸運動能幫你把悶氣排出來，找回鬆弛感。" },
-        special: { name: "特稟小精靈", emoji: "🧚", forest: "2%", advice: "你是敏感的2%，環境變化對你影響極大。建立穩固防護屏障是首要任務。" }
+        ping: { n: "高麗蔘隊長", e: "🌲", a: "你是極致平衡的靈魂！維持規律運動與高品質蔘飲是你的長青秘訣。" },
+        qi: { n: "元氣黃耆君", e: "🔋", a: "電力容易見底，別再報復性運動。參參元氣茶是你隨身的充電寶。" },
+        yang: { n: "肉桂暖心大叔", e: "🔥", a: "外冷內熱，需要暖身更暖心。多曬太陽運動，讓熱力循環起來。" },
+        yin: { n: "石斛小仙女", e: "💧", a: "身體正在喊渴，熬夜是大忌。游泳或溫和伸展能幫你鎖住水分。" },
+        tan: { n: "茯苓除濕官", e: "☁️", a: "沈重感來自積水。多做有氧運動流點微汗，找回輕盈輪廓。" },
+        heat: { n: "決明子排毒師", e: "✨", a: "體內火氣大，爆汗型運動最適合你洩火，記得補水要小口飲。" },
+        xue: { n: "當歸補血員", e: "❤️", a: "能量燃料不足。先補足氣血再重訓，臉色才會紅潤有光。" },
+        yu: { n: "薄荷舒壓師", e: "🌿", a: "壓力悶在胸口了！慢跑或擴胸運動能幫你把悶氣排出來。" },
+        special: { n: "特稟小精靈", e: "🧚", a: "你是敏感的2%，環境變化影響大。建立防護屏障是首要任務。" }
     };
 
-    let currentQ = 0;
-    let scores = { ping: 0, qi: 0, yang: 0, yin: 0, tan: 0, heat: 0, xue: 0, yu: 0, special: 0 };
+    let currentIdx = 0;
+    let scores = { ping:0, qi:0, yang:0, yin:0, tan:0, heat:0, xue:0, yu:0, special:0 };
 
-    // 初始化題目
-    function initQuiz() {
-        const body = document.getElementById('quiz-body');
-        questions.forEach((q, idx) => {
-            let html = `<div class="q-card ${idx === 0 ? 'active' : ''}" id="q-${idx}">
-                <h2>${q.q}</h2>`;
-            q.options.forEach(opt => {
-                html += `<button class="btn-option" onclick="handleSelect(${JSON.stringify(opt.s)})">${opt.t}</button>`;
-            });
-            html += `</div>`;
-            body.innerHTML += html;
+    function renderQuestion() {
+        const quizBody = document.getElementById('quiz-body');
+        const q = questions[currentIdx];
+        let html = `<div class="q-card active"><h2>${q.q}</h2>`;
+        q.opts.forEach(opt => {
+            html += `<button class="btn-option" onclick="handleChoice('${opt.s}')">${opt.t}</button>`;
         });
+        html += `</div>`;
+        quizBody.innerHTML = html;
+        document.getElementById('progress').style.width = ((currentIdx + 1) / questions.length * 100) + '%';
     }
 
-    // 處理選擇
-    window.handleSelect = function(scoreObj) {
-        for (let key in scoreObj) { scores[key] += scoreObj[key]; }
-        
-        document.getElementById(`q-${currentQ}`).classList.remove('active');
-        currentQ++;
-        
-        if (currentQ < questions.length) {
-            document.getElementById(`q-${currentQ}`).classList.add('active');
-            document.getElementById('progress').style.width = (currentQ / questions.length * 100) + '%';
+    window.handleChoice = function(key) {
+        scores[key] += 4;
+        currentIdx++;
+        if (currentIdx < questions.length) {
+            renderQuestion();
         } else {
             showResult();
         }
     };
 
-    // 顯示結果
     function showResult() {
-        document.getElementById('quiz-header').style.display = 'none';
-        document.getElementById('quiz-body').style.display = 'none';
+        document.getElementById('quiz-ui').style.display = 'none';
         document.getElementById('result-page').style.display = 'block';
 
-        // 排序分數
         let sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
-        
-        // 如果最高分是 0 (雖然不可能)，給予平和
-        let mainKey = sorted[0][1] <= 0 ? 'ping' : sorted[0][0];
+        let mainKey = sorted[0][0];
         let subKey = sorted[1][0];
 
         const main = personas[mainKey];
         const sub = personas[subKey];
 
-        // 計算百分比
-        let total = sorted[0][1] + sorted[1][1];
-        if(total <= 0) total = 1;
-        let mainPct = Math.round((sorted[0][1] / total) * 100);
-        if (mainPct < 60) mainPct = 60 + Math.floor(Math.random() * 15); // 增加戲劇效果
-        if (mainPct > 95) mainPct = 95;
-
-        // 渲染文案
-        document.getElementById('res-name').innerText = main.name;
-        document.getElementById('res-emoji').innerText = main.emoji;
-        document.getElementById('res-advice').innerText = main.advice;
-        document.getElementById('res-forest').innerText = `在惟元的漢方森林中，你與 ${main.forest} 的人擁有相似的靈魂頻率。`;
+        document.getElementById('res-name').innerText = main.n;
+        document.getElementById('res-emoji').innerText = main.e;
+        document.getElementById('res-advice').innerHTML = `<strong>主編悄悄話：</strong><br>${main.a}`;
         
-        document.getElementById('main-name').innerText = main.name;
-        document.getElementById('main-val').innerText = mainPct + '%';
-        document.getElementById('sub-name').innerText = sub.name;
-        document.getElementById('sub-val').innerText = (100 - mainPct) + '%';
+        // 隨機分配比例使其看起來更精密
+        let mainPct = 65 + Math.floor(Math.random() * 20);
+        document.getElementById('main-label').innerText = main.n;
+        document.getElementById('main-pct').innerText = mainPct + '%';
+        document.getElementById('sub-label').innerText = sub.n;
+        document.getElementById('sub-pct').innerText = (100 - mainPct) + '%';
 
-        // 動畫條
         setTimeout(() => {
             document.getElementById('main-bar').style.width = mainPct + '%';
             document.getElementById('sub-bar').style.width = (100 - mainPct) + '%';
         }, 100);
     }
 
-    initQuiz();
+    renderQuestion();
 </script>
 
 </body>
