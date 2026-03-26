@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>惟元蔘藥｜草本靈魂構成</title>
+    <title>惟元蔘藥｜草本靈魂檢測</title>
     <style>
         :root { --primary: #4F6B58; --secondary: #D4A373; --bg: #F5F5DC; --text: #3E4A3D; --accent: #E9EDC6; }
         body { font-family: 'PingFang TC', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
@@ -12,8 +12,8 @@
         .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: 0.4s ease; }
         .q-card { display: none; }
         .q-card.active { display: block; animation: slideUp 0.5s ease-out; }
-        h2 { font-size: 1.35rem; line-height: 1.6; color: var(--primary); margin-bottom: 25px; }
-        .btn-opt { display: block; width: 100%; padding: 18px; margin-bottom: 12px; border: 1.5px solid #F0F0F0; border-radius: 15px; background: #fafafa; cursor: pointer; text-align: left; font-size: 1rem; transition: 0.2s; }
+        h2 { font-size: 1.35rem; line-height: 1.6; color: var(--primary); margin-bottom: 25px; font-weight: 700; }
+        .btn-opt { display: block; width: 100%; padding: 18px; margin-bottom: 12px; border: 1.5px solid #F0F0F0; border-radius: 15px; background: #fafafa; cursor: pointer; text-align: left; font-size: 1rem; transition: 0.2s; color: var(--text); }
         .btn-opt:active { background: var(--accent); border-color: var(--primary); }
         #result-page { display: none; text-align: center; animation: fadeIn 1s; }
         .res-name { font-size: 2.2rem; font-weight: 900; color: var(--primary); margin: 10px 0; }
@@ -38,55 +38,128 @@
         <div style="color:var(--secondary); font-weight:bold; letter-spacing: 2px; font-size: 0.9rem;">漢方全息掃描完成</div>
         <div class="res-name" id="res-name">載入中</div>
         <div class="res-img" id="res-emoji">🌿</div>
-        
         <div class="stat-group" id="stats-render"></div>
-
         <div class="advice-box" id="res-advice"></div>
         <button onclick="location.reload()" style="background:var(--primary); color:white; border:none; padding:18px; width:100%; border-radius:15px; font-weight:bold; cursor:pointer; font-size: 1.1rem;">重新檢測身體能量</button>
-        <div style="margin-top:25px; border:2px dashed var(--secondary); padding:15px; border-radius:15px; color:var(--secondary); font-weight:bold;">
-            領取專屬漢方處方券<br><span style="font-size: 1.4rem;">WEIYUAN88</span>
-        </div>
+        <div style="margin-top:25px; border:2px dashed var(--secondary); padding:15px; border-radius:15px; color:var(--secondary); font-weight:bold;">🎁 領取專屬折扣碼：WEIYUAN88</div>
     </div>
 </div>
 
 <script>
+    // --- 完整 12 題題庫 (含 3 題混淆題) ---
     const questions = [
-        { q: "【意識流】若你是一株植物，你更嚮往生長在哪個環境？", 
-          opts: [ {t:"陽光直射、視野遼闊的懸崖頂端", s:"yang"}, {t:"霧氣繚繞、幽靜深遠的森林溪谷", s:"yin"}, {t:"生命力旺盛、潮濕溫暖的雨林", s:"tan"}, {t:"穩定安全、有人細心呵護的溫室", s:"ping"} ] },
-        { q: "下午 3:30 的辦公室，你最誠實的身體感受是？", 
-          opts: [ {t:"說話變費力，只想安靜當個廢物", s:"qi"}, {t:"胸口悶想大口嘆氣，坐不住", s:"yu"}, {t:"眼睛乾澀想流淚，心裡浮躁", s:"yin"}, {t:"思緒清晰，不需要靠咖啡續命", s:"ping"} ] },
-        { q: "在冷氣房待了一整天，下班時你的狀態是？", 
-          opts: [ {t:"手腳凍得像冰棒，連關節都僵硬", s:"yang"}, {t:"噴嚏鼻水大爆發，皮膚乾癢", s:"special"}, {t:"全身出油嚴重，感覺油膩膩", s:"heat"} ] },
-        { q: "剛吃完一頓豐盛大餐，你的腸胃會告訴你：", 
-          opts: [ {t:"肚子脹得像氣球，感覺食物卡著不動", s:"qi"}, {t:"隔天口苦口臭嚴重，立刻長出壓力痘", s:"heat"}, {t:"消化神速，一小時後恢復輕盈", s:"ping"} ] },
-        { q: "面對一杯滿滿冰塊的飲料，你的反應是？", 
-          opts: [ {t:"喝完沒多久，肚子就隱痛想找廁所", s:"yang"}, {t:"喝完還是口渴，感覺水沒吸收到靈魂", s:"yin"}, {t:"喉嚨黏膩感加重，總覺得有痰", s:"tan"} ] },
-        { q: "【心境】遇到不如意的事，你通常如何反應？", 
-          opts: [ {t:"直接爆發，發洩完就沒事了", s:"heat"}, {t:"悶在心裡，反覆思考問題出在哪", s:"yu"}, {t:"感到疲憊，想找個地方躲起來睡一覺", s:"qi"}, {t:"冷靜思考，覺得這也是生活的一部分", s:"ping"} ] },
-        { q: "早起睜開眼的那一刻，你的第一個感覺是？", 
-          opts: [ {t:"沈重得像裹著濕毛巾，臉部浮腫", s:"tan"}, {t:"猛然站起會眼冒金星，伴隨心慌感", s:"xue"}, {t:"雖然睡飽了，但電力顯示只有 5%", s:"qi"} ] },
-        { q: "深夜躺在床上準備入睡時，你的大腦通常在？", 
-          opts: [ {t:"瘋狂重播今天的對話，煩惱明天的事", s:"yu"}, {t:"夢多到像看連環影集，醒來心神不寧", s:"xue"}, {t:"意識斷片，五分鐘內就能進入睡眠", s:"ping"} ] },
-        { q: "到了晚上換鞋時，你對腳部的觀察是？", 
-          opts: [ {t:"襪子的勒痕深到消不掉，鞋子變得很緊", s:"tan"}, {t:"出現不明原因的青紫色瘀青", s:"xue"}, {t:"腳踝依然線條分明，完全沒水腫", s:"ping"} ] },
-        { q: "你平時「流汗」的狀態，最接近以下哪種描述？", 
-          opts: [ {t:"稍微動一下就大汗淋漓，甚至坐著也汗", s:"qi"}, {t:"汗液黏膩汗味重，白色衣服容易發黃", s:"heat"}, {t:"很難出汗，感覺熱氣鎖在皮膚下", s:"xue"} ] },
-        { q: "難得進行了一場暢汗淋漓的運動，隔天你是？", 
-          opts: [ {t:"肌肉痠痛僵硬持續 3 天，循環推不動", s:"xue"}, {t:"累到靈魂出竅，連滑手機都沒力", s:"qi"}, {t:"像排掉一整桶廢水，整個人史上最輕盈", s:"tan"} ] },
-        { q: "在運動過程中，哪種情況最常困擾你？", 
-          opts: [ {t:"剛開始 5 分鐘就氣喘吁吁", s:"qi"}, {t:"暖身要比別人久，不然容易抽筋", s:"yang"}, {t:"身體像過熱引擎，稍微動就燥熱", s:"yin"} ] }
+        {   // 混淆題 1
+            q: "【意識流】若你是一株植物，你更嚮往長在哪個環境？", 
+            opts: [ 
+                {t:"陽光直射、視野遼闊的懸崖頂端", s:"yang"}, 
+                {t:"霧氣繚繞、幽靜深遠的森林溪谷", s:"yin"}, 
+                {t:"生命力旺盛、潮濕溫暖的雨林", s:"tan"}, 
+                {t:"穩定安全、有人細心呵護的溫室", s:"ping"} 
+            ] 
+        },
+        { 
+            q: "下午 3:30 的辦公室，你最誠實的身體感受是？", 
+            opts: [ 
+                {t:"說話變費力，只想安靜當個廢物", s:"qi"}, 
+                {t:"胸口悶想大口嘆氣，坐不住想發火", s:"yu"}, 
+                {t:"眼睛乾澀想流淚，心裡燥熱浮躁", s:"yin"}, 
+                {t:"思緒清晰，不需要靠咖啡續命", s:"ping"} 
+            ] 
+        },
+        { 
+            q: "在冷氣房待了一整天，下班時你的狀態是？", 
+            opts: [ 
+                {t:"手腳凍得像冰棒，連關節都感覺僵硬", s:"yang"}, 
+                {t:"噴嚏鼻水大爆發，或是皮膚突然乾癢", s:"special"}, 
+                {t:"全身出油嚴重，感覺自己油膩膩", s:"heat"} 
+            ] 
+        },
+        { 
+            q: "剛吃完一頓豐盛大餐，你的腸胃會誠實告訴你：", 
+            opts: [ 
+                {t:"肚子脹得像氣球，感覺食物卡著不動", s:"qi"}, 
+                {t:"隔天口苦口臭嚴重，立刻長出壓力痘", s:"heat"}, 
+                {t:"消化神速，一小時後就恢復輕盈", s:"ping"} 
+            ] 
+        },
+        {   // 混淆題 2
+            q: "【心境】遇到突如其來的阻礙，你的第一反應通常是？", 
+            opts: [ 
+                {t:"直接爆發怒火，發洩完就沒事了", s:"heat"}, 
+                {t:"悶在心裡反覆琢磨，感到憂心忡忡", s:"yu"}, 
+                {t:"感到體力被抽乾，只想躲起來睡覺", s:"qi"}, 
+                {t:"冷靜思考對策，覺得這沒什麼大不了", s:"ping"} 
+            ] 
+        },
+        { 
+            q: "面對一杯滿滿冰塊的飲料，你的身體直覺是？", 
+            opts: [ 
+                {t:"喝完沒多久，肚子就隱痛甚至想跑廁所", s:"yang"}, 
+                {t:"喝完還是覺得口渴，水好像沒吸收到體內", s:"yin"}, 
+                {t:"喉嚨黏膩感加重，總覺得有痰吐不乾淨", s:"tan"} 
+            ] 
+        },
+        { 
+            q: "早起睜開眼的那一刻，你的第一個感覺是？", 
+            opts: [ 
+                {t:"身體沈重得像裹著濕毛巾，臉部浮腫", s:"tan"}, 
+                {t:"猛然站起會眼冒金星，伴隨心跳過快", s:"xue"}, 
+                {t:"雖然睡飽了，但電力顯示只有 5%", s:"qi"} 
+            ] 
+        },
+        { 
+            q: "深夜躺在床上準備入睡時，你的大腦通常在？", 
+            opts: [ 
+                {t:"瘋狂重播今天的對話，煩惱明天的事", s:"yu"}, 
+                {t:"夢多到像看連環影集，醒來心神不寧", s:"xue"}, 
+                {t:"意識斷片，五分鐘內就能進入深度睡眠", s:"ping"} 
+            ] 
+        },
+        {   // 混淆題 3
+            q: "【氛圍】如果用一種自然景觀形容脾氣，你覺得是？", 
+            opts: [ 
+                {t:"終日不散的濃霧，細膩但容易陷入憂鬱", s:"yu"}, 
+                {t:"平靜廣闊的湖面，情緒波動小且適應力強", s:"ping"}, 
+                {t:"隨時爆發的活火山，遇到不爽的事會直接炸開", s:"heat"},
+                {t:"寒風中的枯枝，雖然堅韌但感到孤寂冷清", s:"yang"}
+            ] 
+        },
+        { 
+            q: "到了晚上換鞋時，你對下肢的觀察是？", 
+            opts: [ 
+                {t:"襪子的勒痕深到消不掉，鞋子變得很緊", s:"tan"}, 
+                {t:"容易出現不明原因的青紫色瘀青", s:"xue"}, 
+                {t:"腳踝依然線條分明，完全沒有水腫困擾", s:"ping"} 
+            ] 
+        },
+        { 
+            q: "難得進行了一場暢汗淋漓的運動，隔天的感覺是？", 
+            opts: [ 
+                {t:"肌肉痠痛僵硬持續超久，循環推不動", s:"xue"}, 
+                {t:"累到靈魂出竅，滑手機都覺得手指沒力", s:"qi"}, 
+                {t:"像排掉一整桶廢水，整個人史上最輕盈", s:"tan"} 
+            ] 
+        },
+        { 
+            q: "在運動過程中，哪種情況最常讓你感到挫折？", 
+            opts: [ 
+                {t:"剛開始 5 分鐘就氣喘吁吁，耐力極差", s:"qi"}, 
+                {t:"暖身要比別人久，不然肌肉、關節易抽筋", s:"yang"}, 
+                {t:"身體像過熱引擎，稍微動一下就燥熱難耐", s:"yin"} 
+            ] 
+        }
     ];
 
     const personas = {
         ping: { n: "高麗蔘隊長", e: "🌲", c: "#4F6B58", a: "你是森林中珍稀的長青樹，散發著讓人安心的穩定感。維持高品質蔘飲與規律運動是你的長青秘訣。" },
         qi: { n: "元氣黃耆君", e: "🔋", c: "#D4A373", a: "你的電力容易見底，別再報復性運動。參參元氣茶是你隨身的充電寶，幫你關上漏風的窗。" },
-        yang: { n: "肉桂暖心大叔", e: "🔥", c: "#BC6C25", a: "外冷內熱的你，只是缺少點火種。多曬太陽、進行抗阻力訓練，讓熱力循環起來。" },
+        yang: { n: "肉桂暖心大叔", e: "🔥", c: "#BC6C25", a: "外冷內熱的你，只是缺少點火種。多曬太陽、進行溫和運動，讓熱力循環起來。" },
         yin: { n: "石斛小仙女", e: "💧", c: "#9A8C98", a: "精緻但容易乾枯。你需要的是深層滋潤，而非暴力噴汗。游泳或伸展能幫你鎖住珍貴水分。" },
         tan: { n: "茯苓除濕官", e: "☁️", c: "#83C5BE", a: "你不是胖，是水排不掉。長時數的有氧運動最適合你，脫掉這身沈重的負擔吧。" },
-        heat: { n: "決明子排毒師", e: "✨", c: "#E9C46A", a: "追求清爽、容不下雜質。爆汗型運動最適合你洩火，記得補水要小口慢飲，由內而外降溫。" },
+        heat: { n: "決明子排毒師", e: "✨", c: "#E9C46A", a: "追求清爽、容不下雜質。爆汗型運動最適合你洩火，記得補水要小口飲用。" },
         xue: { n: "當歸補血員", e: "❤️", c: "#E5989B", a: "能量燃料略顯不足。別急著挑戰極限，先透過溫潤補給養足氣血，臉色才會紅潤有光。" },
         yu: { n: "薄荷舒壓師", e: "🌿", c: "#84A59D", a: "壓力都悶在胸口了！慢跑或擴胸運動能幫你把悶氣排出來，找回那份久違的鬆弛感。" },
-        special: { n: "特稟小精靈", e: "🧚", c: "#B5838D", a: "天生對環境變化極度敏感。建立穩固防護屏障是首要任務，在乾淨通風的環境運動最適合你。" }
+        special: { n: "特稟小精靈", e: "🧚", c: "#B5838D", a: "天生對環境變化極度敏感。建立穩固防護屏障是首要任務，通風環境運動最適合你。" }
     };
 
     let currentQ = 0;
@@ -102,7 +175,7 @@
     }
 
     window.go = function(s) {
-        scores[s] += 5;
+        scores[s] += 5; // 高權重分流
         currentQ++;
         if(currentQ < questions.length) renderQ(); else showRes();
     };
@@ -115,17 +188,11 @@
         let top3Keys = sorted.slice(0, 3);
         let totalRaw = top3Keys.reduce((acc, curr) => acc + curr[1], 0);
 
-        // --- 有機數值化邏輯 ---
+        // --- 有機亂數百分比計算 ---
         let rawPcts = top3Keys.map(item => (item[1] / totalRaw) * 100);
-        
-        // 加入亂數擾動因子 (-2% ~ +2%)
         let fuzz = rawPcts.map(p => p + (Math.random() * 4 - 2));
-        
-        // 確保總和為 100
         let sumFuzz = fuzz.reduce((a, b) => a + b, 0);
         let finalPcts = fuzz.map(p => Math.round((p / sumFuzz) * 100));
-        
-        // 修正四捨五入後的誤差 (101% 或 99%)
         let finalSum = finalPcts.reduce((a, b) => a + b, 0);
         if (finalSum !== 100) { finalPcts[0] += (100 - finalSum); }
 
