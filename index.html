@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>惟元蔘藥｜草本靈魂檢測</title>
+    <style>
+        :root {
+            --primary: #4F6B58;
+            --secondary: #D4A373;
+            --bg: #F9F9F2;
+            --white: #FFFFFF;
+            --text: #3E4A3D;
+        }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; background-color: var(--bg); color: var(--text); margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
+        #quiz-container { width: 100%; max-width: 450px; background: var(--white); padding: 25px; border-radius: 24px; box-shadow: 0 15px 35px rgba(79, 107, 88, 0.1); align-self: center; }
+        
+        .progress-container { width: 100%; height: 8px; background: #E9EDC6; border-radius: 4px; margin-bottom: 30px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--primary); width: 8.33%; transition: 0.5s ease; }
+
+        .question-card { display: none; }
+        .question-card.active { display: block; animation: slideIn 0.4s ease-out; }
+        
+        h2 { font-size: 1.25rem; line-height: 1.5; margin-bottom: 25px; color: var(--primary); }
+        .option-btn { display: block; width: 100%; padding: 16px 20px; margin: 12px 0; border: 1.5px solid #F0F0F0; border-radius: 16px; background: #FAFAFA; cursor: pointer; transition: 0.2s; font-size: 1rem; text-align: left; line-height: 1.4; color: var(--text); }
+        .option-btn:active { background-color: #E9EDC6; border-color: var(--primary); transform: scale(0.98); }
+
+        #result-page { display: none; text-align: center; animation: fadeIn 0.8s; }
+        .persona-badge { background: var(--primary); color: white; display: inline-block; padding: 6px 16px; border-radius: 20px; font-size: 0.9rem; margin-bottom: 10px; }
+        .persona-name { font-size: 1.8rem; font-weight: bold; margin-bottom: 15px; color: var(--primary); }
+        .persona-img { width: 180px; height: 180px; background: #F0F4F1; border-radius: 50%; margin: 20px auto; display: flex; align-items: center; justify-content: center; font-size: 80px; border: 5px solid #FFF; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        
+        .chart-section { margin: 25px 0; text-align: left; }
+        .chart-label { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; font-weight: 600; }
+        .bar-bg { width: 100%; height: 24px; background: #F0F0F0; border-radius: 12px; margin-bottom: 15px; overflow: hidden; }
+        .bar-fill { height: 100%; transition: 1s cubic-bezier(0.1, 0.5, 0.5, 1); }
+
+        .advice-box { text-align: left; background: #FDFDF9; border: 1px solid #E9EDC6; padding: 18px; border-radius: 16px; font-size: 0.95rem; line-height: 1.7; margin-top: 20px; }
+        .promo-banner { background: #FFF4E6; border: 2px dashed #D4A373; padding: 15px; border-radius: 12px; margin-top: 25px; color: #8B5E3C; font-weight: bold; cursor: pointer; }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+</head>
+<body>
+
+<div id="quiz-container">
+    <div id="quiz-flow">
+        <div class="progress-container"><div class="progress-fill" id="progress"></div></div>
+        
+        <div id="q1" class="question-card active">
+            <h2>下午 3:30 的辦公室，你的「續航力」通常是？</h2>
+            <button class="option-btn" onclick="next(1, 2, {qi:2})">腦袋當機，只想原地斷電</button>
+            <button class="option-btn" onclick="next(1, 2, {yin:2})">眼睛酸澀，螢幕字跡模糊</button>
+            <button class="option-btn" onclick="next(1, 2, {yu:2})">情緒煩躁，好想大聲嘆氣</button>
+            <button class="option-btn" onclick="next(1, 2, {ping:2})">狀態滿格，還能再戰三場</button>
+        </div>
+
+        <div id="q2" class="question-card">
+            <h2>在冷氣房待了一整天，下班時你的感覺是？</h2>
+            <button class="option-btn" onclick="next(2, 3, {yang:2})">手腳冷冰冰，像個移動冰櫃</button>
+            <button class="option-btn" onclick="next(2, 3, {yin:2})">皮膚乾癢、喉嚨燥燥的</button>
+            <button class="option-btn" onclick="next(2, 3, {heat:2})">臉部出油嚴重，感覺油膩膩</button>
+        </div>
+
+        <div id="q3" class="question-card">
+            <h2>犒賞自己吃了一頓麻辣鍋大餐後，隔天的你是？</h2>
+            <button class="option-btn" onclick="next(3, 4, {heat:2})">臉上或背後立刻「驚喜」冒痘</button>
+            <button class="option-btn" onclick="next(3, 4, {qi:2})">肚子脹氣，感覺食物卡在胃裡</button>
+            <button class="option-btn" onclick="next(3, 4, {ping:2})">沒感覺，消化系統跟鋼鐵一樣強</button>
+        </div>
+
+        <div id="q4" class="question-card">
+            <h2>關於「手搖飲」，你通常的選擇是？</h2>
+            <button class="option-btn" onclick="next(4, 5, {yang:2})">必點去冰或熱飲，喝冰的會抗議</button>
+            <button class="option-btn" onclick="next(4, 5, {yin:2})">喝完水還是口乾，想一直續杯</button>
+            <button class="option-btn" onclick="next(4, 5, {tan:2})">喝完覺得身體沈重，痰變多了</button>
+        </div>
+
+        <div id="q5" class="question-card">
+            <h2>明明睡滿 8 小時，早起睜開眼卻覺得？</h2>
+            <button class="option-btn" onclick="next(5, 6, {tan:2})">身體沈重像被除濕機吸住</button>
+            <button class="option-btn" onclick="next(5, 6, {qi:2})">像沒睡一樣，體力還是赤字</button>
+            <button class="option-btn" onclick="next(5, 6, {yin:2})">莫名出一身汗，醒來內衣微濕</button>
+        </div>
+
+        <div id="q6" class="question-card">
+            <h2>當壓力大、事情多時，你的睡眠品質通常會？</h2>
+            <button class="option-btn" onclick="next(6, 7, {yu:2})">翻來覆去睡不著，腦袋停不下來</button>
+            <button class="option-btn" onclick="next(6, 7, {xue:2})">雖然睡著了但夢超多，醒來很累</button>
+            <button class="option-btn" onclick="next(6, 7, {ping:2})">一如往常，三秒入睡</button>
+        </div>
+
+        <div id="q7" class="question-card">
+            <h2>到了下午或晚上，你觀察自己的雙腿通常會？</h2>
+            <button class="option-btn" onclick="next(7, 8, {tan:2})">襪子勒痕超深，鞋子感覺變擠</button>
+            <button class="option-btn" onclick="next(7, 8, {ping:2})">沒什麼變化，依然線條分明</button>
+            <button class="option-btn" onclick="next(7, 8, {xue:2})">皮膚暗沈，甚至出現不明瘀青</button>
+        </div>
+
+        <div id="q8" class="question-card">
+            <h2>你對「流汗」這件事的觀察是？</h2>
+            <button class="option-btn" onclick="next(8, 9, {heat:2})">汗味重且黏黏的，衣服易發黃</button>
+            <button class="option-btn" onclick="next(8, 9, {qi:2})">稍微動一下就大汗淋漓</button>
+            <button class="option-btn" onclick="next(8, 9, {yang:2})">很難出汗，感覺熱氣散不掉</button>
+        </div>
+
+        <div id="q9" class="question-card">
+            <h2>遇到臨時插進來的工作，你的第一反應是？</h2>
+            <button class="option-btn" onclick="next(9, 10, {yu:2})">胸口一緊，下意識想嘆氣</button>
+            <button class="option-btn" onclick="next(9, 10, {qi:2})">容易心慌，感覺呼吸變淺</button>
+            <button class="option-btn" onclick="next(9, 10, {ping:2})">冷靜分析，兵來將擋</button>
+        </div>
+
+        <div id="q10" class="question-card">
+            <h2>關於「心情特質」，你覺得自己比較像？</h2>
+            <button class="option-btn" onclick="next(10, 11, {yu:2})">易碎玻璃，細膩但容易悶悶不樂</button>
+            <button class="option-btn" onclick="next(10, 11, {heat:2})">火藥桶，一點就著，容易煩躁</button>
+            <button class="option-btn" onclick="next(10, 11, {ping:2})">沒什麼感覺的石頭，情緒穩定</button>
+        </div>
+
+        <div id="q11" class="question-card">
+            <h2>難得進行了一場暢汗淋漓的運動，隔天的你是？</h2>
+            <button class="option-btn" onclick="next(11, 12, {xue:2})">全身痠痛緊繃，感覺循環卡住</button>
+            <button class="option-btn" onclick="next(11, 12, {qi:2})">累到懷疑人生，體力完全透支</button>
+            <button class="option-btn" onclick="next(11, 12, {tan:2})">像脫掉濕衣服，整個人神清氣爽</button>
+        </div>
+
+        <div id="q12" class="question-card">
+            <h2>在運動過程中，你最常遇到的挑戰是？</h2>
+            <button class="option-btn" onclick="next(12, 13, {qi:2})">很快就氣喘吁吁，耐力是天敵</button>
+            <button class="option-btn" onclick="next(12, 13, {yang:2})">關節或肌肉容易僵硬、抽筋</button>
+            <button class="option-btn" onclick="next(12, 13, {yin:2})">心跳很快，容易覺得心慌燥熱</button>
+        </div>
+    </div>
+
+    <div id="result-page">
+        <div class="persona-badge" id="rarity-tag">罕見體質</div>
+        <div class="persona-name" id="p-name">石斛小仙女</div>
+        <div class="persona-img" id="p-emoji">💧</div>
+        
+        <div class="chart-section">
+            <div class="chart-label"><span id="main-label">主要構成</span><span id="main-pct">70%</span></div>
+            <div class="bar-bg"><div class="bar-fill" id="main-bar" style="background:var(--primary); width:0%"></div></div>
+            
+            <div class="chart-label"><span id="sub-label">次要構成</span><span id="sub-pct">30%</span></div>
+            <div class="bar-bg"><div class="bar-fill" id="sub-bar" style="background:var(--secondary); width:0%"></div></div>
+        </div>
+
+        <p id="forest-info" style="font-size: 0.85rem; color: #888; margin-bottom: 20px;"></p>
+        
+        <div class="advice-box">
+            <strong>主編悄悄話：</strong><br>
+            <span id="p-advice">加載中...</span>
+        </div>
+
+        <div class="promo-banner" onclick="alert('折扣碼 WEIYUAN88 已複製！')">
+            🎁 領取專屬折扣碼：WEIYUAN88
+        </div>
+        
+        <p style="font-size: 0.8rem; margin-top: 20px; color: #aaa;">截圖分享結果，讓朋友也測測看！</p>
+    </div>
+</div>
+
+<script>
+    let scores = { ping: 0, qi: 0, yang: 0, yin: 0, tan: 0, heat: 0, xue: 0, yu: 0, special: 0 };
+    const totalQ = 12;
+
+    const personaData = {
+        ping: { name: "高麗蔘隊長", emoji: "🌲", rarity: "天選之子", forest: "5%", color: "#4F6B58", advice: "恭喜你是極致平衡的靈魂！維持規律運動與高品質蔘飲是你的長青秘訣。" },
+        qi: { name: "元氣黃耆君", emoji: "🔋", rarity: "溫暖守護", forest: "25%", color: "#D4A373", advice: "你的電力容易見底，運動要量力而行。參參元氣茶是你隨身的充電寶。" },
+        yang: { name: "肉桂暖心大叔", emoji: "🔥", rarity: "內斂火種", forest: "10%", color: "#BC6C25", advice: "外冷內熱的你，需要暖身更暖心。冬天多運動曬太陽，讓熱力循環起來。" },
+        yin: { name: "石斛小仙女", emoji: "💧", rarity: "精緻藝術", forest: "12%", color: "#9A8C98", advice: "身體正在喊渴，熬夜是你的大忌。游泳或溫和伸展能幫你鎖住水分。" },
+        tan: { name: "茯苓除濕官", emoji: "☁️", rarity: "穩重哲學", forest: "15%", color: "#83C5BE", advice: "身體沈重是因為濕氣太重。多做有氧運動流點微汗，整個人會輕盈不少。" },
+        heat: { name: "決明子排毒師", emoji: "✨", rarity: "正義使者", forest: "5%", color: "#E9C46A", advice: "體內火氣大，容易煩躁冒痘。高強度運動後記得小口飲用清涼漢方茶飲。" },
+        xue: { name: "當歸補血員", emoji: "❤️", rarity: "柔弱纖細", forest: "8%", color: "#E5989B", advice: "能量燃料略顯不足。別急著重訓，先透過食補把氣血養足，氣色自然紅潤。" },
+        yu: { name: "薄荷舒壓師", emoji: "🌿", rarity: "感性詩人", forest: "18%", color: "#84A59D", advice: "壓力都悶在胸口了！慢跑或擴胸運動能幫你把悶氣排出來，心情會好很多。" },
+        special: { name: "特稟小精靈", emoji: "🧚", rarity: "直覺天賦", forest: "2%", color: "#B5838D", advice: "你是最敏感的2%，環境變化對你影響極大。建立穩固的防護屏障是首要任務。" }
+    };
+
+    function next(current, nextIdx, scoreObj) {
+        // 紀錄分數
+        for (let key in scoreObj) { scores[key] += scoreObj[key]; }
+        
+        // 切換題目
+        document.getElementById(`q${current}`).classList.remove('active');
+        const nextEl = document.getElementById(`q${nextIdx}`);
+        
+        if (nextEl) {
+            nextEl.classList.add('active');
+            document.getElementById('progress').style.width = (nextIdx / totalQ * 100) + '%';
+        } else {
+            showResult();
+        }
+    }
+
+    function showResult() {
+        document.getElementById('quiz-flow').style.display = 'none';
+        document.getElementById('result-page').style.display = 'block';
+
+        // 計算最高分
+        let sorted = Object.entries(scores).sort((a, b) => b[1] - a[1]);
+        let mainKey = sorted[0][0];
+        let subKey = sorted[1][0];
+
+        // 處理全 0 或特殊情況
+        if (scores[mainKey] === 0) mainKey = 'ping';
+        
+        const main = personaData[mainKey];
+        const sub = personaData[subKey];
+
+        // 渲染文案
+        document.getElementById('rarity-tag').innerText = main.rarity;
+        document.getElementById('p-name').innerText = main.name;
+        document.getElementById('p-emoji').innerText = main.emoji;
+        document.getElementById('p-advice').innerText = main.advice;
+        document.getElementById('forest-info').innerText = `森林中約有 ${main.forest} 的人與你擁有相似的靈魂頻率。`;
+
+        // 渲染比例條 (簡單模擬)
+        let mainVal = sorted[0][1];
+        let subVal = sorted[1][1] || 1;
+        let mainPct = Math.round((mainVal / (mainVal + subVal)) * 100);
+        if (mainKey === 'ping' && mainVal > 0) mainPct = 85; // 平和通常佔比高
+
+        document.getElementById('main-label').innerText = main.name;
+        document.getElementById('main-pct').innerText = mainPct + '%';
+        document.getElementById('sub-label').innerText = sub.name;
+        document.getElementById('sub-pct').innerText = (100 - mainPct) + '%';
+        
+        setTimeout(() => {
+            document.getElementById('main-bar').style.width = mainPct + '%';
+            document.getElementById('main-bar').style.backgroundColor = main.color;
+            document.getElementById('sub-bar').style.width = (100 - mainPct) + '%';
+        }, 100);
+    }
+</script>
+
+</body>
+</html>
