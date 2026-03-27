@@ -1212,75 +1212,221 @@ function showResult() {
         });
     }, 200);
 
-    window._resultName = main.n;
+    window._resultName  = main.n;
     window._resultEmoji = main.e;
+    window._resultImg   = main.img;
+    window._resultColor = main.c;
+    window._resultAdv   = [main.main, mainK !== subK ? sub.sub : '', main.adv].filter(Boolean).join('');
+    window._resultStats = combined; // [{key, pct}]
 }
 
 /* ─────────────────────────────────────────────────────────────
-   SHARE — 截圖結果卡 + 網址
+   SHARE — Canvas 繪製分享卡
 ───────────────────────────────────────────────────────────── */
 async function shareResult() {
-    const shareText = `我的草本靈魂是「${window._resultName}」${window._resultEmoji}\n用惟元蔘藥漢方全息掃描，來測測你的體質！`;
-    const shareUrl  = location.href;
+    const shareUrl = location.href;
 
-    // 嘗試截圖分享
     try {
-        // 動態載入 html2canvas（只載一次）
-        if (!window.html2canvas) {
-            await new Promise((res, rej) => {
-                const s = document.createElement('script');
-                s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
-                s.onload = res; s.onerror = rej;
-                document.head.appendChild(s);
-            });
-        }
-
-        showToast('截圖製作中…');
-
-        // 截取結果卡（top card + stats + advice）
-        const target = document.getElementById('result-page');
-        const canvas = await html2canvas(target, {
-            useCORS: true,
-            allowTaint: false,
-            backgroundColor: '#FAF9F6',
-            scale: 2,
-            scrollY: -window.scrollY,
-        });
-
-        // canvas → blob → File
-        const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+        showToast('製作分享卡片中…');
+        const blob = await buildShareCard();
         const file = new File([blob], 'weiyuan-result.png', { type: 'image/png' });
 
-        // 支援帶圖分享
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
             await navigator.share({
                 title: '草本靈魂體質檢測',
-                text: shareText,
+                text: `我的草本靈魂是「${window._resultName}」${window._resultEmoji}`,
                 url: shareUrl,
                 files: [file],
             });
         } else if (navigator.share) {
-            // 不支援帶圖，純文字分享
-            await navigator.share({ title: '草本靈魂體質檢測', text: shareText, url: shareUrl });
+            await navigator.share({
+                title: '草本靈魂體質檢測',
+                text: `我的草本靈魂是「${window._resultName}」${window._resultEmoji}\n${shareUrl}`,
+            });
         } else {
-            // 桌機 fallback：下載圖片 + 複製連結
+            // 桌機：下載圖
             const a = document.createElement('a');
-            a.href = canvas.toDataURL('image/png');
+            a.href = URL.createObjectURL(blob);
             a.download = 'weiyuan-result.png';
             a.click();
-            await navigator.clipboard.writeText(shareUrl);
-            showToast('結果圖已下載，連結已複製！');
+            showToast('分享卡已下載！');
         }
-
-    } catch (err) {
-        // 截圖失敗 → 純文字 fallback
-        if (navigator.share) {
-            navigator.share({ title: '草本靈魂體質檢測', text: shareText, url: shareUrl }).catch(()=>{});
-        } else {
-            navigator.clipboard && navigator.clipboard.writeText(shareText + '\n' + shareUrl);
-            showToast('已複製分享文字！');
-        }
+    } catch(e) {
+        showToast('分享失敗，請截圖儲存');
     }
+}
+
+function rrPath(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x+r, y); ctx.lineTo(x+w-r, y); ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+    ctx.lineTo(x+w, y+h-r); ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+    ctx.lineTo(x+r, y+h); ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+    ctx.lineTo(x, y+r); ctx.quadraticCurveTo(x, y, x+r, y);
+    ctx.closePath();
+}
+
+function getWrapLines(ctx, text, maxW, font) {
+    ctx.font = font;
+    const chars = text.split('');
+    const lines = [];
+    let line = '';
+    for (const c of chars) {
+        const test = line + c;
+        if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = c; }
+        else line = test;
+    }
+    if (line) lines.push(line);
+    return lines;
+}
+
+async function buildShareCard() {
+    const W = 750, PAD = 44, OUTER = 20, INNER = 28;
+    const name   = window._resultName  || '—';
+    const imgUrl = window._resultImg   || '';
+    const advice = window._resultAdv   || '';
+    const stats  = window._resultStats || [];
+
+    const FOREST = '#2E4230', SAGE = '#3D5C3A', GOLD = '#B8955A';
+    const PARCHMENT = '#F7F3EC', MIST = '#EAE6DC', WHITE = '#FFFFFF', INK = '#1E2A1E';
+
+    // 載入角色圖
+    let charImg = null;
+    if (imgUrl) {
+        try {
+            charImg = await new Promise((res, rej) => {
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                img.onload = () => res(img);
+                img.onerror = () => rej();
+                img.src = imgUrl;
+            });
+        } catch(e) {}
+    }
+
+    // 預算文字高度
+    const tmpC = document.createElement('canvas');
+    tmpC.width = W;
+    const tctx = tmpC.getContext('2d');
+    const advFont = '400 24px sans-serif';
+    const advLines = getWrapLines(tctx, advice, W - (PAD + OUTER) * 2 - 22, advFont);
+    const ADV_TEXT_H = advLines.length * 38 + 32;
+
+    const IMG_W = W - OUTER*2 - INNER*2;
+    const IMG_H = IMG_W;
+    const HEADER_H = 158 + INNER + IMG_H + INNER;
+    const STAT_H   = 48 + stats.length * 52 + 24;
+    const ADV_H    = 52 + ADV_TEXT_H + 16;
+    const FOOT_H   = 64;
+    const TOTAL_H  = OUTER + HEADER_H + 14 + STAT_H + 14 + ADV_H + 14 + FOOT_H + OUTER;
+
+    const canvas = document.createElement('canvas');
+    canvas.width = W; canvas.height = TOTAL_H;
+    const ctx = canvas.getContext('2d');
+
+    // 背景
+    ctx.fillStyle = PARCHMENT;
+    ctx.fillRect(0, 0, W, TOTAL_H);
+
+    // ── 深綠主卡 ─────────────────────────────────────────────
+    let cy = OUTER;
+    ctx.fillStyle = FOREST;
+    rrPath(ctx, OUTER, cy, W-OUTER*2, HEADER_H, 28); ctx.fill();
+
+    // 裝飾圓
+    ctx.save();
+    ctx.globalAlpha = 0.08;
+    ctx.strokeStyle = GOLD; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(W-60, cy+60, 130, 0, Math.PI*2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(60, cy+HEADER_H-60, 90, 0, Math.PI*2); ctx.stroke();
+    ctx.restore();
+
+    cy += 38;
+    ctx.fillStyle = GOLD; ctx.font = '500 22px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('漢方全息掃描完成', W/2, cy);
+
+    cy += 38;
+    ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.font = '400 24px sans-serif';
+    ctx.fillText('你的草本靈魂是', W/2, cy);
+
+    cy += 48;
+    ctx.fillStyle = WHITE; ctx.font = 'bold 56px serif';
+    ctx.fillText(name, W/2, cy);
+
+    cy += 16;
+    ctx.fillStyle = GOLD; ctx.fillRect(W/2-24, cy, 48, 2);
+
+    // 角色圖
+    cy += 18;
+    const imgX = OUTER + INNER, imgY = cy;
+    if (charImg) {
+        ctx.save();
+        rrPath(ctx, imgX, imgY, IMG_W, IMG_H, 16);
+        ctx.clip();
+        ctx.drawImage(charImg, imgX, imgY, IMG_W, IMG_H);
+        ctx.restore();
+    } else {
+        ctx.fillStyle = '#4A6741';
+        rrPath(ctx, imgX, imgY, IMG_W, IMG_H, 16); ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,255,0.25)'; ctx.font = '400 28px sans-serif';
+        ctx.fillText('角色插圖', W/2, imgY + IMG_H/2);
+    }
+    cy = OUTER + HEADER_H + 14;
+
+    // ── 能量條卡 ─────────────────────────────────────────────
+    ctx.fillStyle = WHITE;
+    rrPath(ctx, OUTER, cy, W-OUTER*2, STAT_H, 20); ctx.fill();
+
+    ctx.fillStyle = SAGE; ctx.font = '600 22px sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText('能量構成分析', PAD+OUTER, cy+38);
+    ctx.strokeStyle = MIST; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(PAD+OUTER+132, cy+30); ctx.lineTo(W-OUTER-PAD, cy+30); ctx.stroke();
+
+    const roleLabels = ['顯性靈魂','隱性基因','潛在因子'];
+    stats.forEach(({key, pct}, i) => {
+        const p = personaData[key];
+        const by = cy + 62 + i*52;
+        const bx = PAD+OUTER, bw = W-(PAD+OUTER)*2, bh = 10;
+
+        ctx.font = '600 22px sans-serif'; ctx.fillStyle = INK; ctx.textAlign = 'left';
+        ctx.fillText(`${p.e} ${p.n}`, bx, by-6);
+        ctx.font = '400 18px sans-serif'; ctx.fillStyle = '#999';
+        ctx.fillText(roleLabels[i], bx + ctx.measureText(`${p.e} ${p.n}`).width + 10, by-6);
+        ctx.font = '600 22px sans-serif'; ctx.fillStyle = FOREST; ctx.textAlign = 'right';
+        ctx.fillText(`${pct}%`, W-OUTER-PAD, by-6);
+
+        ctx.fillStyle = MIST; rrPath(ctx, bx, by, bw, bh, 5); ctx.fill();
+        ctx.fillStyle = p.c;  rrPath(ctx, bx, by, bw*pct/100, bh, 5); ctx.fill();
+    });
+    cy += STAT_H + 14;
+
+    // ── 悄悄話卡 ─────────────────────────────────────────────
+    ctx.fillStyle = WHITE;
+    rrPath(ctx, OUTER, cy, W-OUTER*2, ADV_H, 20); ctx.fill();
+
+    ctx.fillStyle = SAGE; ctx.font = '600 22px sans-serif'; ctx.textAlign = 'left';
+    ctx.fillText('惟元悄悄話', PAD+OUTER, cy+38);
+    ctx.strokeStyle = MIST;
+    ctx.beginPath(); ctx.moveTo(PAD+OUTER+112, cy+30); ctx.lineTo(W-OUTER-PAD, cy+30); ctx.stroke();
+
+    ctx.fillStyle = PARCHMENT;
+    rrPath(ctx, PAD+OUTER, cy+52, W-(PAD+OUTER)*2, ADV_TEXT_H, 10); ctx.fill();
+    ctx.fillStyle = GOLD; ctx.fillRect(PAD+OUTER, cy+52, 3, ADV_TEXT_H);
+
+    ctx.fillStyle = '#444'; ctx.font = advFont; ctx.textAlign = 'left';
+    let ty = cy + 52 + 30;
+    for (const line of advLines) { ctx.fillText(line, PAD+OUTER+18, ty); ty += 38; }
+    cy += ADV_H + 14;
+
+    // ── 品牌底部 ─────────────────────────────────────────────
+    ctx.fillStyle = FOREST;
+    rrPath(ctx, OUTER, cy, W-OUTER*2, FOOT_H, 16); ctx.fill();
+
+    ctx.fillStyle = GOLD; ctx.font = '500 24px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText('惟元蔘藥｜草本靈魂體質檢測', W/2, cy+26);
+    ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '400 19px sans-serif';
+    ctx.fillText(location.hostname || 'weeiywun.github.io', W/2, cy+52);
+
+    return new Promise(res => canvas.toBlob(res, 'image/png'));
 }
 
 function copyCode() {
