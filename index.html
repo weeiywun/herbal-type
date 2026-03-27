@@ -494,7 +494,6 @@
             background: var(--forest);
             border-radius: 20px;
             box-shadow: var(--shadow);
-            overflow: hidden;
             border: 1px solid rgba(255,255,255,0.05);
             text-align: center;
             padding: 28px 20px 20px;
@@ -925,7 +924,7 @@ const questions = [
         { t: "(A) 說話好累，只想安靜做事", s: {qi:5} },
         { t: "(B) 胸口悶塞，莫名的需要喘口氣", s: {yu:5} },
         { t: "(C) 眼角微痠，帶點哈欠，來杯咖啡續命水吧", s: {yin:4,xue:1} },
-        { t: "(D) 快下班了！伸個懶腰繼續拚", s: {ping:5} }
+        { t: "(D) 快下班了！伸個懶腰繼續拚", s: {ping:3, qi:2} }
     ]},
     { q: "Q3. 在冷氣房待了一整天，下班時你的狀態是？", opts: [
         { t: "(A) 手腳凍得像冰棒，外套不離身", s: {yang:5} },
@@ -942,7 +941,7 @@ const questions = [
         { t: "(A) 直接爆發怒火，發洩完就沒事了", s: {heat:5} },
         { t: "(B) 悶在心裡反覆琢磨，感到憂心忡忡", s: {yu:5} },
         { t: "(C) 感到體力抽乾，只想躲起來睡覺", s: {qi:5} },
-        { t: "(D) 深呼吸，冷靜思考對策", s: {ping:5} }
+        { t: "(D) 深呼吸，冷靜思考對策", s: {ping:3, yu:2} }
     ]},
     { q: "Q6. 客人送了一杯滿滿冰塊的飲料，你的身體直覺是？", opts: [
         { t: "(A) 喝完沒多久，肚子痛想跑廁所", s: {yang:5} },
@@ -958,46 +957,46 @@ const questions = [
     ]},
     { q: "Q8. 如果用一種自然景觀形容自己，你覺得是？", opts: [
         { t: "(A) 永不落幕的薄霧，在細膩中前行", s: {yu:5} },
-        { t: "(B) 平靜廣闊的湖面，適應力強", s: {ping:5} },
+        { t: "(B) 平靜廣闊的湖面，適應力強", s: {ping:3, yin:2} },
         { t: "(C) 隨時爆發的活火山，直球對決！", s: {heat:5} },
         { t: "(D) 深山裡的巨木，雖然冷清但堅韌不拔", s: {yang:3,qi:2} }
     ]},
     { q: "Q9. 下班到家，你的第一件事情會是？", opts: [
         { t: "(A) 先到自己的小角落躺著，休息五分鐘", s: {qi:4,yu:1} },
         { t: "(B) 開冰箱拿飲料，順便籌備今天晚餐", s: {tan:3,heat:2} },
-        { t: "(C) 迅速換裝，把握時間出門運動", s: {ping:5} },
+        { t: "(C) 迅速換裝，把握時間出門運動", s: {ping:3, tan:2} },
         { t: "(D) 上班實在太累了，趕緊洗澡睡一下", s: {xue:4,qi:1} }
     ]},
     { q: "Q10. 在平時的運動中，哪種情況最常發生？", opts: [
         { t: "(A) 剛開始 5 分鐘就氣喘吁吁，耐力極差", s: {qi:5} },
         { t: "(B) 暖身要比別人久，不然肌肉、關節易抽筋", s: {yang:3,xue:2} },
         { t: "(C) 爆汗體質，稍微動一下就像淋雨一樣", s: {yin:3,heat:2} },
-        { t: "(D) 能自己掌握節奏，順利完成每一次訓練", s: {ping:5} }
+        { t: "(D) 能自己掌握節奏，順利完成每一次訓練", s: {ping:3, yang:2} }
     ]},
     { q: "Q11. 昨天進行了一場暢汗淋漓的運動，隔天的感覺是？", opts: [
         { t: "(A) 肌肉痠痛僵進，需要在床上拉筋一會兒", s: {xue:3,special:2} },
         { t: "(B) 累到靈魂出竅，滑手機都覺得累", s: {qi:5} },
         { t: "(C) 像排掉一整桶廢水，整個人輕盈許多", s: {tan:5} },
-        { t: "(D) 精神換新，更能專注處理工作", s: {ping:5} }
+        { t: "(D) 精神換新，更能專注處理工作", s: {ping:3, qi:2} }
     ]},
     { q: "Q12. 深夜躺在床上準備入睡時，你的大腦通常在？", opts: [
         { t: "(A) 瘋狂重播今天的對話，煩惱明天的事", s: {yu:5} },
         { t: "(B) 夢多到像看連環影集，醒來心神不寧", s: {xue:5} },
-        { t: "(C) 意識斷片，五分鐘內進入深度睡眠", s: {ping:5} },
+        { t: "(C) 意識斷片，五分鐘內進入深度睡眠", s: {ping:3, tan:2} },
         { t: "(D) 捨不得入睡，手機滑到最後一刻", s: {yin:3,yu:2} }
     ]}
 ];
 
 const personaData = {
-    ping:    { n:"人參隊長",     e:"🌲", c:"#4F6B58", img:"https://duk.tw/KbGfr6.jpg", main:"你擁有穩定的生理核心，情緒起伏小、適應力強，是現代生活中極其難得的「長青體質」。", sub:"同時，你的心中具備一種隱性的穩定力量，讓你在波動中仍能維持核心平衡。", adv:"維持現狀就是你最好的功課，定期補給人蔘茶飲，帶著這份穩定走得更遠。" },
-    qi:      { n:"元氣黃耆君",   e:"🔋", c:"#D4A373", img:"https://duk.tw/kQL16q.jpg", main:"你常覺得「電力不足」，說話或工作沒多久就感到疲倦——這不是懶，而是身體的防禦力出現了缺口。", sub:"平時體內的氣能守護力較弱，常在忙碌過後感到明顯的後勁不足。", adv:"別再勉強透支體力，你需要的是溫和而持續的補給，幫身體關上那扇漏風的窗。" },
-    yang:    { n:"肉桂職人",     e:"🔥", c:"#BC6C25", img:"https://duk.tw/Pivenh.jpg", main:"怕冷是你的日常，即使夏天在室內也常外套不離身，手腳末端的涼意始終不散。", sub:"你的體質深處帶著一抹寒意，讓你在靜下來或入睡前特別容易感到畏冷。", adv:"多曬太陽、喝點溫熱漢方飲，讓熱力重新流向四肢末梢，告別縮成一團的自己。" },
-    yin:     { n:"杞靈小醫仙",   e:"💧", c:"#9A8C98", img:"https://duk.tw/wjXZ7u.jpg", main:"你心思細膩，但身體容易「乾枯」——口乾、眼澀、偶有燥熱感，熬夜與辛辣是你的天敵。", sub:"伴隨著細微的燥熱感，身體有時就像缺水的植物，在乾涸中硬撐著。", adv:"你適合深層滋潤而非爆汗運動，透過枸杞與滋陰漢方的調養，幫靈魂與肌膚找回失去的水分。" },
-    tan:     { n:"茯苓除濕官",   e:"☁️", c:"#83C5BE", img:"https://duk.tw/dn4Ar5.jpg", main:"身體總覺得沉甸甸的、提不起勁？臉部浮腫或鬱悶難耐，是體內「濕氣」過盛的信號。", sub:"平時隱約感受到的水分沈重感，會讓你的身體像裹著濕毛巾般提不起勁。", adv:"排除廢物、恢復輕盈，偶爾的有氧運動搭配利水漢方，能幫你脫掉這身沉重的負荷。" },
-    heat:    { n:"決明子藥師",   e:"✨", c:"#E9C46A", img:"https://duk.tw/wD7oa2.jpg", main:"你熱情、直率，但也容易感到煩躁口苦，臉上偶爾冒出不安分的痘痘——這是身體「過熱」的警報。", sub:"須注意體內潛藏著一股燥火，容易在壓力大或飲食重口味時讓情緒冒出火花。", adv:"定期清理與降溫是你的必修課，爆汗型運動能幫你洩火，但記得補水要小口慢飲。" },
-    xue:     { n:"紅棗補給員",   e:"❤️", c:"#E5989B", img:"https://duk.tw/KqygHA.jpg", main:"臉色偏白、容易心慌，或起身時眼冒金星——身體的「燃料箱」始終不太充盈。", sub:"平時能量燃料的儲備稍嫌不足，讓你在日常衝刺時偶爾會感到虛軟無力。", adv:"別急著挑戰重訓極限，先透過溫潤補給養足氣血，臉色自然會紅潤得像自帶濾鏡。" },
-    yu:      { n:"薄荷舒壓師",   e:"🌿", c:"#84A59D", img:"https://duk.tw/HOrOlN.jpg", main:"你對外界感知靈敏，但壓力容易悶在心裡，導致胸口緊繃、時常不自覺地嘆氣——你的「氣機」卡住了。", sub:"你隱約透著一絲悶在心裡的緊繃感，這份「不鬆快」常影響你的生理節奏。", adv:"試著大口嘆氣、去慢跑或做擴胸伸展，搭配薄荷的清香疏導，找回靈魂久違的鬆弛感。" },
-    special: { n:"小小神農氏",   e:"🧚", c:"#B5838D", img:"https://duk.tw/OWuNBk.jpg", main:"你的感官比一般人更敏銳，季節交替時，噴嚏與皮膚乾癢往往是你最早收到的訊號。", sub:"同時你也帶有高度敏感的特質，外界環境的一點風吹草動都容易引起你的連鎖反應。", adv:"建立穩固的身體屏障是首要任務，保持環境乾淨通風、維持規律節奏，是最適合你的日常法則。" }
+    ping:    { n:"人參隊長",     e:"🌲", c:"#4F6B58", img:"https://weeiywun.github.io/herbal-type/ping.jpg", main:"你擁有穩定的生理核心，情緒起伏小、適應力強，是現代生活中極其難得的「長青體質」。", sub:"同時，你的心中具備一種隱性的穩定力量，讓你在波動中仍能維持核心平衡。", adv:"維持現狀就是你最好的功課，定期補給人蔘茶飲，帶著這份穩定走得更遠。" },
+    qi:      { n:"元氣黃耆君",   e:"🔋", c:"#D4A373", img:"https://weeiywun.github.io/herbal-type/qi.jpg", main:"你常覺得「電力不足」，說話或工作沒多久就感到疲倦——這不是懶，而是身體的防禦力出現了缺口。", sub:"平時體內的氣能守護力較弱，常在忙碌過後感到明顯的後勁不足。", adv:"別再勉強透支體力，你需要的是溫和而持續的補給，幫身體關上那扇漏風的窗。" },
+    yang:    { n:"肉桂職人",     e:"🔥", c:"#BC6C25", img:"https://weeiywun.github.io/herbal-type/yang.jpg", main:"怕冷是你的日常，即使夏天在室內也常外套不離身，手腳末端的涼意始終不散。", sub:"你的體質深處帶著一抹寒意，讓你在靜下來或入睡前特別容易感到畏冷。", adv:"多曬太陽、喝點溫熱漢方飲，讓熱力重新流向四肢末梢，告別縮成一團的自己。" },
+    yin:     { n:"杞靈小醫仙",   e:"💧", c:"#9A8C98", img:"https://weeiywun.github.io/herbal-type/yin.jpg", main:"你心思細膩，但身體容易「乾枯」——口乾、眼澀、偶有燥熱感，熬夜與辛辣是你的天敵。", sub:"伴隨著細微的燥熱感，身體有時就像缺水的植物，在乾涸中硬撐著。", adv:"你適合深層滋潤而非爆汗運動，透過枸杞與滋陰漢方的調養，幫靈魂與肌膚找回失去的水分。" },
+    tan:     { n:"茯苓除濕官",   e:"☁️", c:"#83C5BE", img:"https://weeiywun.github.io/herbal-type/tan.jpg", main:"身體總覺得沉甸甸的、提不起勁？臉部浮腫或鬱悶難耐，是體內「濕氣」過盛的信號。", sub:"平時隱約感受到的水分沈重感，會讓你的身體像裹著濕毛巾般提不起勁。", adv:"排除廢物、恢復輕盈，偶爾的有氧運動搭配利水漢方，能幫你脫掉這身沉重的負荷。" },
+    heat:    { n:"決明子藥師",   e:"✨", c:"#E9C46A", img:"https://weeiywun.github.io/herbal-type/heat.jpg", main:"你熱情、直率，但也容易感到煩躁口苦，臉上偶爾冒出不安分的痘痘——這是身體「過熱」的警報。", sub:"須注意體內潛藏著一股燥火，容易在壓力大或飲食重口味時讓情緒冒出火花。", adv:"定期清理與降溫是你的必修課，爆汗型運動能幫你洩火，但記得補水要小口慢飲。" },
+    xue:     { n:"紅棗補給員",   e:"❤️", c:"#E5989B", img:"https://weeiywun.github.io/herbal-type/xue.jpg", main:"臉色偏白、容易心慌，或起身時眼冒金星——身體的「燃料箱」始終不太充盈。", sub:"平時能量燃料的儲備稍嫌不足，讓你在日常衝刺時偶爾會感到虛軟無力。", adv:"別急著挑戰重訓極限，先透過溫潤補給養足氣血，臉色自然會紅潤得像自帶濾鏡。" },
+    yu:      { n:"薄荷舒壓師",   e:"🌿", c:"#84A59D", img:"https://weeiywun.github.io/herbal-type/yu.jpg", main:"你對外界感知靈敏，但壓力容易悶在心裡，導致胸口緊繃、時常不自覺地嘆氣——你的「氣機」卡住了。", sub:"你隱約透著一絲悶在心裡的緊繃感，這份「不鬆快」常影響你的生理節奏。", adv:"試著大口嘆氣、去慢跑或做擴胸伸展，搭配薄荷的清香疏導，找回靈魂久違的鬆弛感。" },
+    special: { n:"小小神農氏",   e:"🧚", c:"#B5838D", img:"https://weeiywun.github.io/herbal-type/special.jpg", main:"你的感官比一般人更敏銳，季節交替時，噴嚏與皮膚乾癢往往是你最早收到的訊號。", sub:"同時你也帶有高度敏感的特質，外界環境的一點風吹草動都容易引起你的連鎖反應。", adv:"建立穩固的身體屏障是首要任務，保持環境乾淨通風、維持規律節奏，是最適合你的日常法則。" }
 };
 
 /* ─────────────────────────────────────────────────────────────
@@ -1171,7 +1170,16 @@ function showResult() {
     document.getElementById('res-name').textContent = main.n;
     // 角色圖片
     const resImg = document.getElementById('res-img');
-    if(resImg && main.img) resImg.src = main.img;
+    if(resImg && main.img) {
+        resImg.src = '';
+        resImg.style.cssText = 'width:100%;display:block;border-radius:14px;object-fit:cover;';
+        resImg.onload  = () => { console.log('✓ 圖片載入成功:', main.img); };
+        resImg.onerror = () => { console.error('✗ 圖片載入失敗:', main.img); resImg.style.display='none'; };
+        resImg.src = main.img;
+        console.log('設定圖片 src:', main.img);
+    } else {
+        console.warn('resImg:', resImg, 'main.img:', main.img);
+    }
 
     // 悄悄話：主描述 + 副角 sub + 建議，拼成一段
     const adviceText = [main.main, mainK !== subK ? sub.sub : '', main.adv]
@@ -1221,16 +1229,14 @@ function showResult() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   SHARE — Canvas 繪製分享卡
+   SHARE — 隱藏 div 截圖法
 ───────────────────────────────────────────────────────────── */
 async function shareResult() {
     const shareUrl = location.href;
-
     try {
         showToast('製作分享卡片中…');
-        const blob = await buildShareCard();
+        const blob = await buildShareDiv();
         const file = new File([blob], 'weiyuan-result.png', { type: 'image/png' });
-
         if (navigator.canShare && navigator.canShare({ files: [file] })) {
             await navigator.share({
                 title: '草本靈魂體質檢測',
@@ -1244,7 +1250,6 @@ async function shareResult() {
                 text: `我的草本靈魂是「${window._resultName}」${window._resultEmoji}\n${shareUrl}`,
             });
         } else {
-            // 桌機：下載圖
             const a = document.createElement('a');
             a.href = URL.createObjectURL(blob);
             a.download = 'weiyuan-result.png';
@@ -1256,178 +1261,94 @@ async function shareResult() {
     }
 }
 
-function rrPath(ctx, x, y, w, h, r) {
-    ctx.beginPath();
-    ctx.moveTo(x+r, y); ctx.lineTo(x+w-r, y); ctx.quadraticCurveTo(x+w, y, x+w, y+r);
-    ctx.lineTo(x+w, y+h-r); ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
-    ctx.lineTo(x+r, y+h); ctx.quadraticCurveTo(x, y+h, x, y+h-r);
-    ctx.lineTo(x, y+r); ctx.quadraticCurveTo(x, y, x+r, y);
-    ctx.closePath();
-}
-
-function getWrapLines(ctx, text, maxW, font) {
-    ctx.font = font;
-    const chars = text.split('');
-    const lines = [];
-    let line = '';
-    for (const c of chars) {
-        const test = line + c;
-        if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = c; }
-        else line = test;
+async function buildShareDiv() {
+    if (!window.html2canvas) {
+        await new Promise((res, rej) => {
+            const s = document.createElement('script');
+            s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+            s.onload = res; s.onerror = rej;
+            document.head.appendChild(s);
+        });
     }
-    if (line) lines.push(line);
-    return lines;
-}
 
-async function buildShareCard() {
-    const W = 750, PAD = 44, OUTER = 20, INNER = 28;
     const name   = window._resultName  || '—';
     const imgUrl = window._resultImg   || '';
-    const advice = window._resultAdv   || '';
+    const adv    = window._resultAdv   || '';
     const stats  = window._resultStats || [];
 
-    const FOREST = '#2E4230', SAGE = '#3D5C3A', GOLD = '#B8955A';
-    const PARCHMENT = '#F7F3EC', MIST = '#EAE6DC', WHITE = '#FFFFFF', INK = '#1E2A1E';
+    const FOREST = '#2E4230', GOLD = '#B8955A', PARCHMENT = '#F7F3EC';
+    const MIST = '#EAE6DC', SAGE = '#3D5C3A';
+    const cardW = 375;
+    const roleMap = ['顯性靈魂','隱性基因','潛在因子'];
 
-    // 載入角色圖
-    let charImg = null;
-    if (imgUrl) {
-        try {
-            charImg = await new Promise((res, rej) => {
-                const img = new Image();
-                img.crossOrigin = 'anonymous';
-                img.onload = () => res(img);
-                img.onerror = () => rej();
-                img.src = imgUrl;
-            });
-        } catch(e) {}
-    }
-
-    // 預算文字高度
-    const tmpC = document.createElement('canvas');
-    tmpC.width = W;
-    const tctx = tmpC.getContext('2d');
-    const advFont = '400 24px sans-serif';
-    const advLines = getWrapLines(tctx, advice, W - (PAD + OUTER) * 2 - 22, advFont);
-    const ADV_TEXT_H = advLines.length * 38 + 32;
-
-    const IMG_W = W - OUTER*2 - INNER*2;
-    const IMG_H = IMG_W;
-    const HEADER_H = 158 + INNER + IMG_H + INNER;
-    const STAT_H   = 48 + stats.length * 52 + 24;
-    const ADV_H    = 52 + ADV_TEXT_H + 16;
-    const FOOT_H   = 64;
-    const TOTAL_H  = OUTER + HEADER_H + 14 + STAT_H + 14 + ADV_H + 14 + FOOT_H + OUTER;
-
-    const canvas = document.createElement('canvas');
-    canvas.width = W; canvas.height = TOTAL_H;
-    const ctx = canvas.getContext('2d');
-
-    // 背景
-    ctx.fillStyle = PARCHMENT;
-    ctx.fillRect(0, 0, W, TOTAL_H);
-
-    // ── 深綠主卡 ─────────────────────────────────────────────
-    let cy = OUTER;
-    ctx.fillStyle = FOREST;
-    rrPath(ctx, OUTER, cy, W-OUTER*2, HEADER_H, 28); ctx.fill();
-
-    // 裝飾圓
-    ctx.save();
-    ctx.globalAlpha = 0.08;
-    ctx.strokeStyle = GOLD; ctx.lineWidth = 1.5;
-    ctx.beginPath(); ctx.arc(W-60, cy+60, 130, 0, Math.PI*2); ctx.stroke();
-    ctx.beginPath(); ctx.arc(60, cy+HEADER_H-60, 90, 0, Math.PI*2); ctx.stroke();
-    ctx.restore();
-
-    cy += 38;
-    ctx.fillStyle = GOLD; ctx.font = '500 22px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('漢方全息掃描完成', W/2, cy);
-
-    cy += 38;
-    ctx.fillStyle = 'rgba(255,255,255,0.45)'; ctx.font = '400 24px sans-serif';
-    ctx.fillText('你的草本靈魂是', W/2, cy);
-
-    cy += 48;
-    ctx.fillStyle = WHITE; ctx.font = 'bold 56px serif';
-    ctx.fillText(name, W/2, cy);
-
-    cy += 16;
-    ctx.fillStyle = GOLD; ctx.fillRect(W/2-24, cy, 48, 2);
-
-    // 角色圖
-    cy += 18;
-    const imgX = OUTER + INNER, imgY = cy;
-    if (charImg) {
-        ctx.save();
-        rrPath(ctx, imgX, imgY, IMG_W, IMG_H, 16);
-        ctx.clip();
-        ctx.drawImage(charImg, imgX, imgY, IMG_W, IMG_H);
-        ctx.restore();
-    } else {
-        ctx.fillStyle = '#4A6741';
-        rrPath(ctx, imgX, imgY, IMG_W, IMG_H, 16); ctx.fill();
-        ctx.fillStyle = 'rgba(255,255,255,0.25)'; ctx.font = '400 28px sans-serif';
-        ctx.fillText('角色插圖', W/2, imgY + IMG_H/2);
-    }
-    cy = OUTER + HEADER_H + 14;
-
-    // ── 能量條卡 ─────────────────────────────────────────────
-    ctx.fillStyle = WHITE;
-    rrPath(ctx, OUTER, cy, W-OUTER*2, STAT_H, 20); ctx.fill();
-
-    ctx.fillStyle = SAGE; ctx.font = '600 22px sans-serif'; ctx.textAlign = 'left';
-    ctx.fillText('能量構成分析', PAD+OUTER, cy+38);
-    ctx.strokeStyle = MIST; ctx.lineWidth = 1;
-    ctx.beginPath(); ctx.moveTo(PAD+OUTER+132, cy+30); ctx.lineTo(W-OUTER-PAD, cy+30); ctx.stroke();
-
-    const roleLabels = ['顯性靈魂','隱性基因','潛在因子'];
-    stats.forEach(({key, pct}, i) => {
+    const statsHtml = stats.map(({ key, pct }, i) => {
         const p = personaData[key];
-        const by = cy + 62 + i*52;
-        const bx = PAD+OUTER, bw = W-(PAD+OUTER)*2, bh = 10;
+        return `
+        <div style="margin-bottom:14px;">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;">
+                <span style="font-size:14px;font-weight:700;color:#1E2A1E;">${p.e} ${p.n}</span>
+                <span style="font-size:11px;color:#999;margin-right:auto;margin-left:6px;">${roleMap[i]}</span>
+                <span style="font-size:15px;font-weight:700;color:${FOREST};">${pct}%</span>
+            </div>
+            <div style="height:8px;background:${MIST};border-radius:4px;overflow:hidden;">
+                <div style="height:100%;width:${pct}%;background:${p.c};border-radius:4px;"></div>
+            </div>
+        </div>`;
+    }).join('');
 
-        ctx.font = '600 22px sans-serif'; ctx.fillStyle = INK; ctx.textAlign = 'left';
-        ctx.fillText(`${p.e} ${p.n}`, bx, by-6);
-        ctx.font = '400 18px sans-serif'; ctx.fillStyle = '#999';
-        ctx.fillText(roleLabels[i], bx + ctx.measureText(`${p.e} ${p.n}`).width + 10, by-6);
-        ctx.font = '600 22px sans-serif'; ctx.fillStyle = FOREST; ctx.textAlign = 'right';
-        ctx.fillText(`${pct}%`, W-OUTER-PAD, by-6);
+    const wrap = document.createElement('div');
+    wrap.style.cssText = `position:fixed;left:-9999px;top:0;width:${cardW}px;background:${PARCHMENT};font-family:'PingFang TC','Noto Sans TC',sans-serif;padding:12px;box-sizing:border-box;`;
 
-        ctx.fillStyle = MIST; rrPath(ctx, bx, by, bw, bh, 5); ctx.fill();
-        ctx.fillStyle = p.c;  rrPath(ctx, bx, by, bw*pct/100, bh, 5); ctx.fill();
+    wrap.innerHTML = `
+        <div style="background:${FOREST};border-radius:18px;padding:22px 20px 16px;text-align:center;margin-bottom:10px;">
+            <div style="font-size:11px;color:${GOLD};letter-spacing:4px;margin-bottom:8px;font-weight:500;">漢方全息掃描完成</div>
+            <div style="font-size:12px;color:rgba(255,255,255,0.45);letter-spacing:2px;margin-bottom:6px;">你的草本靈魂是</div>
+            <div style="font-size:28px;font-weight:900;color:#fff;letter-spacing:2px;margin-bottom:10px;">${name}</div>
+            <div style="width:32px;height:2px;background:${GOLD};margin:0 auto 14px;"></div>
+            <img src="${imgUrl}" crossorigin="anonymous"
+                 style="width:100%;display:block;border-radius:12px;object-fit:cover;"
+                 onerror="this.style.display='none'">
+        </div>
+        <div style="background:#fff;border-radius:14px;padding:16px;margin-bottom:10px;">
+            <div style="font-size:11px;font-weight:700;color:${SAGE};letter-spacing:3px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid ${MIST};">能量構成分析</div>
+            ${statsHtml}
+        </div>
+        <div style="background:#fff;border-radius:14px;padding:16px;margin-bottom:10px;">
+            <div style="font-size:11px;font-weight:700;color:${SAGE};letter-spacing:3px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid ${MIST};">惟元悄悄話</div>
+            <div style="background:${PARCHMENT};border-left:3px solid ${GOLD};border-radius:0 8px 8px 0;padding:12px 12px 12px 14px;font-size:13px;line-height:1.85;color:#444;">${adv}</div>
+        </div>
+        <div style="background:${FOREST};border-radius:12px;padding:12px;text-align:center;">
+            <div style="font-size:13px;font-weight:600;color:${GOLD};letter-spacing:1px;">惟元蔘藥｜草本靈魂體質檢測</div>
+            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:3px;">${location.hostname || 'weeiywun.github.io'}</div>
+        </div>
+    `;
+
+    document.body.appendChild(wrap);
+
+    const img = wrap.querySelector('img');
+    if (img && imgUrl) {
+        await new Promise(res => {
+            if (img.complete && img.naturalHeight > 0) { res(); return; }
+            img.onload = res; img.onerror = res;
+            setTimeout(res, 3000);
+        });
+    }
+
+    const canvas = await html2canvas(wrap, {
+        useCORS: true,
+        allowTaint: false,
+        backgroundColor: PARCHMENT,
+        scale: 2,
+        width: cardW,
+        windowWidth: cardW,
+        scrollX: 0, scrollY: 0,
+        x: 0, y: 0,
     });
-    cy += STAT_H + 14;
 
-    // ── 悄悄話卡 ─────────────────────────────────────────────
-    ctx.fillStyle = WHITE;
-    rrPath(ctx, OUTER, cy, W-OUTER*2, ADV_H, 20); ctx.fill();
-
-    ctx.fillStyle = SAGE; ctx.font = '600 22px sans-serif'; ctx.textAlign = 'left';
-    ctx.fillText('惟元悄悄話', PAD+OUTER, cy+38);
-    ctx.strokeStyle = MIST;
-    ctx.beginPath(); ctx.moveTo(PAD+OUTER+112, cy+30); ctx.lineTo(W-OUTER-PAD, cy+30); ctx.stroke();
-
-    ctx.fillStyle = PARCHMENT;
-    rrPath(ctx, PAD+OUTER, cy+52, W-(PAD+OUTER)*2, ADV_TEXT_H, 10); ctx.fill();
-    ctx.fillStyle = GOLD; ctx.fillRect(PAD+OUTER, cy+52, 3, ADV_TEXT_H);
-
-    ctx.fillStyle = '#444'; ctx.font = advFont; ctx.textAlign = 'left';
-    let ty = cy + 52 + 30;
-    for (const line of advLines) { ctx.fillText(line, PAD+OUTER+18, ty); ty += 38; }
-    cy += ADV_H + 14;
-
-    // ── 品牌底部 ─────────────────────────────────────────────
-    ctx.fillStyle = FOREST;
-    rrPath(ctx, OUTER, cy, W-OUTER*2, FOOT_H, 16); ctx.fill();
-
-    ctx.fillStyle = GOLD; ctx.font = '500 24px sans-serif'; ctx.textAlign = 'center';
-    ctx.fillText('惟元蔘藥｜草本靈魂體質檢測', W/2, cy+26);
-    ctx.fillStyle = 'rgba(255,255,255,0.4)'; ctx.font = '400 19px sans-serif';
-    ctx.fillText(location.hostname || 'weeiywun.github.io', W/2, cy+52);
-
+    document.body.removeChild(wrap);
     return new Promise(res => canvas.toBlob(res, 'image/png'));
 }
+
 
 function copyCode() {
     const code = 'WEIYUAN88';
