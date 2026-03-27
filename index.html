@@ -434,8 +434,10 @@
             font-size: 0.9rem;
             color: var(--ink);
             line-height: 1.5;
-            transition: all 0.2s ease;
+            transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
             -webkit-appearance: none;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .opt-badge {
@@ -741,6 +743,61 @@
             color: var(--white);
         }
 
+        /* ─── Website Card ───────────────────────────────────────────── */
+        .result-website-card {
+            background: var(--forest);
+            border-radius: 16px;
+            padding: 18px 20px;
+            margin-bottom: 16px;
+            border: 1px dashed rgba(184,149,90,0.4);
+        }
+
+        .website-card-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .website-label {
+            font-size: 0.65rem;
+            color: var(--gold);
+            letter-spacing: 3px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .website-name {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--white);
+            letter-spacing: 1px;
+        }
+
+        .website-desc {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.45);
+            margin-top: 3px;
+            letter-spacing: 1px;
+        }
+
+        .btn-website {
+            display: inline-block;
+            padding: 10px 18px;
+            background: var(--gold);
+            color: var(--forest);
+            border-radius: 20px;
+            font-family: var(--serif);
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: opacity 0.2s;
+        }
+
+        .btn-website:active { opacity: 0.8; }
+
         /* ─── Share Row ──────────────────────────────────────────────── */
         .share-row {
             display: flex;
@@ -894,6 +951,17 @@
         <div class="result-advice-card">
             <div class="card-section-title">惟元悄悄話</div>
             <div class="advice-content" id="res-advice"></div>
+        </div>
+
+        <div class="result-website-card">
+            <div class="website-card-inner">
+                <div class="website-card-left">
+                    <div class="website-label">官方網站</div>
+                    <div class="website-name">惟元蔘藥</div>
+                    <div class="website-desc">有機中藥 · 人蔘燕窩 · 漢方生活</div>
+                </div>
+                <a href="https://www.wyginseng.com" target="_blank" class="btn-website">前往官網 →</a>
+            </div>
         </div>
 
         <div class="share-row">
@@ -1092,6 +1160,10 @@ function handleAnswer(scoreObj, btn) {
     document.querySelectorAll('.btn-opt').forEach(b => b.disabled = true);
     btn.classList.add('selected');
 
+    // 立即鎖住整個 slide 防止 iOS active 殘影
+    const currentSlide = document.querySelector('.q-slide');
+    if (currentSlide) currentSlide.style.pointerEvents = 'none';
+
     // 記錄本題答案，供返回時扣分
     history.push(scoreObj);
 
@@ -1104,13 +1176,13 @@ function handleAnswer(scoreObj, btn) {
         const slide = document.querySelector('.q-slide');
         if(slide) {
             slide.classList.add('leaving');
-            setTimeout(() => renderQuestion(currentIdx), 280);
+            setTimeout(() => renderQuestion(currentIdx), 320);
         }
     } else {
         setTimeout(() => {
             showPage('loading-page');
             setTimeout(showResult, 1800);
-        }, 350);
+        }, 380);
     }
 }
 
