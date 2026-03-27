@@ -1217,15 +1217,69 @@ function showResult() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   SHARE & COPY
+   SHARE — 截圖結果卡 + 網址
 ───────────────────────────────────────────────────────────── */
-function shareResult() {
-    const text = `我的草本靈魂是「${window._resultName}」${window._resultEmoji}\n用惟元蔘藥漢方全息掃描，來測測你的體質！`;
-    if(navigator.share) {
-        navigator.share({ title: '草本靈魂體質檢測', text, url: location.href }).catch(()=>{});
-    } else {
-        navigator.clipboard && navigator.clipboard.writeText(text + '\n' + location.href);
-        showToast('已複製分享文字！');
+async function shareResult() {
+    const shareText = `我的草本靈魂是「${window._resultName}」${window._resultEmoji}\n用惟元蔘藥漢方全息掃描，來測測你的體質！`;
+    const shareUrl  = location.href;
+
+    // 嘗試截圖分享
+    try {
+        // 動態載入 html2canvas（只載一次）
+        if (!window.html2canvas) {
+            await new Promise((res, rej) => {
+                const s = document.createElement('script');
+                s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+                s.onload = res; s.onerror = rej;
+                document.head.appendChild(s);
+            });
+        }
+
+        showToast('截圖製作中…');
+
+        // 截取結果卡（top card + stats + advice）
+        const target = document.getElementById('result-page');
+        const canvas = await html2canvas(target, {
+            useCORS: true,
+            allowTaint: false,
+            backgroundColor: '#FAF9F6',
+            scale: 2,
+            scrollY: -window.scrollY,
+        });
+
+        // canvas → blob → File
+        const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+        const file = new File([blob], 'weiyuan-result.png', { type: 'image/png' });
+
+        // 支援帶圖分享
+        if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+                title: '草本靈魂體質檢測',
+                text: shareText,
+                url: shareUrl,
+                files: [file],
+            });
+        } else if (navigator.share) {
+            // 不支援帶圖，純文字分享
+            await navigator.share({ title: '草本靈魂體質檢測', text: shareText, url: shareUrl });
+        } else {
+            // 桌機 fallback：下載圖片 + 複製連結
+            const a = document.createElement('a');
+            a.href = canvas.toDataURL('image/png');
+            a.download = 'weiyuan-result.png';
+            a.click();
+            await navigator.clipboard.writeText(shareUrl);
+            showToast('結果圖已下載，連結已複製！');
+        }
+
+    } catch (err) {
+        // 截圖失敗 → 純文字 fallback
+        if (navigator.share) {
+            navigator.share({ title: '草本靈魂體質檢測', text: shareText, url: shareUrl }).catch(()=>{});
+        } else {
+            navigator.clipboard && navigator.clipboard.writeText(shareText + '\n' + shareUrl);
+            showToast('已複製分享文字！');
+        }
     }
 }
 
