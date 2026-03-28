@@ -1398,7 +1398,7 @@ const questions = [
 ];
 
 const personaData = {
-    ping:    { n:"人參隊長",     e:"🌲", c:"#4F6B58", img:"https://weeiywun.github.io/herbal-type/ping.jpg", main:"你擁有穩定的生理核心，情緒起伏小、適應力強，是現代生活中極其難得的「長青體質」。", sub:"同時，你的心中具備一種隱性的穩定力量，讓你在波動中仍能維持核心平衡。", adv:"維持現狀就是你最好的功課，定期補給人蔘茶飲，帶著這份穩定走得更遠。" },
+    ping:    { n:"人參智者",     e:"🌲", c:"#4F6B58", img:"https://weeiywun.github.io/herbal-type/ping.jpg", main:"你擁有穩定的生理核心，情緒起伏小、適應力強，是現代生活中極其難得的「長青體質」。", sub:"同時，你的心中具備一種隱性的穩定力量，讓你在波動中仍能維持核心平衡。", adv:"維持現狀就是你最好的功課，定期補給人蔘茶飲，帶著這份穩定走得更遠。" },
     qi:      { n:"元氣黃耆君",   e:"🔋", c:"#D4A373", img:"https://weeiywun.github.io/herbal-type/qi.jpg", main:"你常覺得「電力不足」，說話或工作沒多久就感到疲倦——這不是懶，而是身體的防禦力出現了缺口。", sub:"平時體內的氣能守護力較弱，常在忙碌過後感到明顯的後勁不足。", adv:"別再勉強透支體力，你需要的是溫和而持續的補給，幫身體關上那扇漏風的窗。" },
     yang:    { n:"肉桂職人",     e:"🔥", c:"#BC6C25", img:"https://weeiywun.github.io/herbal-type/yang.jpg", main:"怕冷是你的日常，即使夏天在室內也常外套不離身，手腳末端的涼意始終不散。", sub:"你的體質深處帶著一抹寒意，讓你在靜下來或入睡前特別容易感到畏冷。", adv:"多曬太陽、喝點溫熱漢方飲，讓熱力重新流向四肢末梢，告別縮成一團的自己。" },
     yin:     { n:"杞靈小醫仙",   e:"💧", c:"#9A8C98", img:"https://weeiywun.github.io/herbal-type/yin.jpg", main:"你心思細膩，但身體容易「乾枯」——口乾、眼澀、偶有燥熱感，熬夜與辛辣是你的天敵。", sub:"伴隨著細微的燥熱感，身體有時就像缺水的植物，在乾涸中硬撐著。", adv:"你適合深層滋潤而非爆汗運動，透過枸杞與滋陰漢方的調養，幫靈魂與肌膚找回失去的水分。" },
@@ -1850,7 +1850,7 @@ function listenMotion() {
         const total = Math.abs(acc.x||0) + Math.abs(acc.y||0) + Math.abs(acc.z||0);
         const delta = Math.abs(total - lastAcc);
         lastAcc = total;
-        if (delta > 25) triggerShake();
+        if (delta > 14) triggerShake();
     };
     window.addEventListener('devicemotion', _motionHandler);
 }
