@@ -434,7 +434,7 @@
             font-size: 0.9rem;
             color: var(--ink);
             line-height: 1.5;
-            transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+            transition: background 0.1s ease, border-color 0.1s ease, color 0.1s ease;
             -webkit-appearance: none;
             touch-action: manipulation;
             -webkit-tap-highlight-color: transparent;
@@ -456,20 +456,19 @@
             flex-shrink: 0;
         }
 
-        .btn-opt:hover,
-        .btn-opt:active {
-            background: var(--forest);
-            border-color: var(--forest);
-            color: var(--white);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 14px rgba(46,66,48,0.2);
-        }
-
-        .btn-opt:hover .opt-badge,
-        .btn-opt:active .opt-badge {
-            background: rgba(255,255,255,0.2);
-            border-color: rgba(255,255,255,0.3);
-            color: var(--white);
+        @media (hover: hover) {
+            .btn-opt:hover {
+                background: var(--forest);
+                border-color: var(--forest);
+                color: var(--white);
+                transform: translateY(-1px);
+                box-shadow: 0 4px 14px rgba(46,66,48,0.2);
+            }
+            .btn-opt:hover .opt-badge {
+                background: rgba(255,255,255,0.2);
+                border-color: rgba(255,255,255,0.3);
+                color: var(--white);
+            }
         }
 
         .btn-opt.selected {
@@ -745,11 +744,12 @@
 
         /* ─── Website Card ───────────────────────────────────────────── */
         .result-website-card {
-            background: var(--forest);
+            background: var(--white);
             border-radius: 16px;
             padding: 18px 20px;
             margin-bottom: 16px;
-            border: 1px dashed rgba(184,149,90,0.4);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
         }
 
         .website-card-inner {
@@ -763,20 +763,20 @@
             font-size: 0.65rem;
             color: var(--gold);
             letter-spacing: 3px;
-            font-weight: 500;
+            font-weight: 600;
             margin-bottom: 4px;
         }
 
         .website-name {
             font-size: 1rem;
             font-weight: 800;
-            color: var(--white);
+            color: var(--forest);
             letter-spacing: 1px;
         }
 
         .website-desc {
             font-size: 0.7rem;
-            color: rgba(255,255,255,0.45);
+            color: var(--sage);
             margin-top: 3px;
             letter-spacing: 1px;
         }
@@ -785,7 +785,7 @@
             display: inline-block;
             padding: 10px 18px;
             background: var(--gold);
-            color: var(--forest);
+            color: var(--white);
             border-radius: 20px;
             font-family: var(--serif);
             font-size: 0.82rem;
@@ -861,6 +861,131 @@
 
         /* ─── Utility ────────────────────────────────────────────────── */
         .mt-12 { margin-top: 12px; }
+
+        /* ═══ SHAKE PAGE ════════════════════════════════════════════ */
+        .shake-wrap { background:#F5EDD8; border-radius:20px; overflow:hidden; box-shadow:var(--shadow); min-height:480px; display:flex; flex-direction:column; }
+        .shake-top { background:#8B2020; padding:16px 24px; text-align:center; }
+        .shake-label { font-size:0.62rem; color:rgba(255,220,120,0.65); letter-spacing:6px; margin-bottom:2px; }
+        .shake-title { font-size:1.1rem; font-weight:900; color:#FFE080; letter-spacing:8px; }
+        .shake-body { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 24px; gap:28px; position:relative; }
+        .shake-body::before { content:''; position:absolute; inset:0; background-image:repeating-linear-gradient(0deg,transparent,transparent 28px,rgba(139,110,70,0.04) 28px,rgba(139,110,70,0.04) 29px); pointer-events:none; }
+        .shake-hint { font-size:0.88rem; color:#5C1A1A; letter-spacing:2px; font-weight:500; text-align:center; position:relative; }
+        .shake-sub { font-size:0.7rem; color:rgba(139,80,30,0.5); letter-spacing:2px; text-align:center; position:relative; }
+        .shake-cup-wrap { cursor:pointer; position:relative; z-index:1; -webkit-tap-highlight-color:transparent; }
+        .shake-cup { width:90px; }
+        .cup-rim { width:90px; height:14px; background:linear-gradient(180deg,#7A3010 0%,#BC6C25 100%); border-radius:8px 8px 0 0; box-shadow:0 2px 4px rgba(0,0,0,0.2); }
+        .cup-inner { width:82px; height:110px; margin:0 auto; background:linear-gradient(160deg,#C8895A 0%,#A0601A 60%,#7A3010 100%); border-radius:4px 4px 20px 20px; position:relative; overflow:hidden; box-shadow:inset 0 4px 12px rgba(0,0,0,0.3),0 4px 12px rgba(0,0,0,0.2); display:flex; align-items:flex-end; justify-content:center; gap:6px; padding-bottom:8px; }
+        .stick { width:6px; border-radius:3px 3px 1px 1px; background:linear-gradient(180deg,#F5EDD8 0%,#E8D5A0 100%); box-shadow:1px 0 3px rgba(0,0,0,0.2); transform-origin:bottom center; }
+        .s1{height:72px;transform:rotate(-8deg);}
+        .s2{height:80px;transform:rotate(-3deg);}
+        .s3{height:88px;transform:rotate(0deg);}
+        .s4{height:76px;transform:rotate(4deg);}
+        .s5{height:68px;transform:rotate(9deg);}
+        @keyframes shaking {
+            0%  {transform:rotate(0deg) translateX(0);}
+            8%  {transform:rotate(-12deg) translateX(-6px);}
+            16% {transform:rotate(12deg) translateX(6px);}
+            24% {transform:rotate(-10deg) translateX(-5px);}
+            32% {transform:rotate(10deg) translateX(5px);}
+            42% {transform:rotate(-14deg) translateX(-7px);}
+            52% {transform:rotate(14deg) translateX(7px);}
+            62% {transform:rotate(-8deg) translateX(-4px);}
+            72% {transform:rotate(8deg) translateX(4px);}
+            84% {transform:rotate(-4deg) translateX(-2px);}
+            92% {transform:rotate(4deg) translateX(2px);}
+            100%{transform:rotate(0deg) translateX(0);}
+        }
+        @keyframes stickJump {
+            0%,100%{transform:rotate(var(--r)) translateY(0);}
+            20%{transform:rotate(calc(var(--r) - 10deg)) translateY(-10px);}
+            45%{transform:rotate(calc(var(--r) + 12deg)) translateY(-6px);}
+            70%{transform:rotate(calc(var(--r) - 7deg)) translateY(-14px);}
+            88%{transform:rotate(calc(var(--r) + 4deg)) translateY(-4px);}
+        }
+        @keyframes pulseHint { 0%,100%{opacity:0.6;transform:scale(1);}50%{opacity:1;transform:scale(1.05);} }
+        @keyframes fadeOutUp { from{opacity:1;transform:translateY(0);}to{opacity:0;transform:translateY(-30px);} }
+        .shake-cup-wrap:not(.triggered) .shake-cup { animation:pulseHint 2s ease infinite; }
+        .shake-cup.shaking { animation:shaking 1.2s ease; }
+        .shake-cup.shaking .s1{--r:-8deg;animation:stickJump 1.2s ease;}
+        .shake-cup.shaking .s2{--r:-3deg;animation:stickJump 1.2s 0.08s ease;}
+        .shake-cup.shaking .s3{--r:0deg; animation:stickJump 1.2s 0.15s ease;}
+        .shake-cup.shaking .s4{--r:4deg; animation:stickJump 1.2s 0.12s ease;}
+        .shake-cup.shaking .s5{--r:9deg; animation:stickJump 1.2s 0.05s ease;}
+        .shake-cup.done { animation:fadeOutUp 0.4s ease forwards; }
+
+        /* ═══ YAOJIAN PAGE ══════════════════════════════════════════ */
+        .btn-yaojian {
+            display: block; width: 100%; padding: 18px;
+            background: linear-gradient(135deg, #8B2020 0%, #5C1A1A 100%);
+            color: #FFE080; border: none; border-radius: var(--radius);
+            font-family: var(--serif); font-size: 1rem; font-weight: 700;
+            letter-spacing: 3px; cursor: pointer; margin-bottom: 12px;
+            box-shadow: 0 4px 16px rgba(139,32,32,0.35);
+            transition: opacity 0.2s; touch-action: manipulation;
+        }
+        .btn-yaojian:active { opacity: 0.85; }
+        .btn-back-result {
+            display: block; width: 100%; padding: 14px;
+            background: transparent; border: 1.5px solid rgba(139,100,40,0.25);
+            border-radius: 10px; font-family: var(--serif);
+            font-size: 0.88rem; color: #7A4020; cursor: pointer;
+            margin-top: 14px; letter-spacing: 1px;
+        }
+        .yj-wrap {
+            background: #F5EDD8; border-radius: 4px;
+            position: relative; overflow: hidden;
+            box-shadow: 0 12px 48px rgba(0,0,0,0.12);
+        }
+        .yj-wrap::before {
+            content: ''; position: absolute; inset: 0;
+            background-image:
+                repeating-linear-gradient(0deg, transparent, transparent 28px, rgba(139,110,70,0.04) 28px, rgba(139,110,70,0.04) 29px),
+                repeating-linear-gradient(90deg, transparent, transparent 28px, rgba(139,110,70,0.03) 28px, rgba(139,110,70,0.03) 29px);
+            pointer-events: none; z-index: 0;
+        }
+        .yj-wrap::after {
+            content: ''; position: absolute; inset: 8px;
+            border: 1px solid rgba(139,100,40,0.18);
+            border-radius: 2px; pointer-events: none; z-index: 0;
+        }
+        .yj-header { background: #8B2020; padding: 14px 24px; text-align: center; position: relative; z-index: 1; }
+        .yj-brand { font-size: 0.62rem; color: rgba(255,220,120,0.65); letter-spacing: 6px; margin-bottom: 2px; }
+        .yj-title { font-size: 1.1rem; font-weight: 900; color: #FFE080; letter-spacing: 8px; }
+        .yj-number-zone { padding: 22px 24px 16px; text-align: center; position: relative; z-index: 1; border-bottom: 1px solid rgba(139,100,40,0.15); }
+        .yj-number-zone::before { content: '☰ ☷'; position: absolute; left: 18px; top: 18px; font-size: 11px; color: rgba(139,80,30,0.2); letter-spacing: 4px; }
+        .yj-number-zone::after  { content: '☵ ☲'; position: absolute; right: 18px; top: 18px; font-size: 11px; color: rgba(139,80,30,0.2); letter-spacing: 4px; }
+        .yj-num-row { display: flex; align-items: center; justify-content: center; gap: 16px; margin-bottom: 8px; }
+        .yj-num-label { font-size: 1.1rem; color: #8B5020; letter-spacing: 2px; font-weight: 500; line-height: 1; }
+        .yj-num { font-size: 3.8rem; font-weight: 900; color: #5C1A1A; line-height: 1; }
+        .yj-luck { display: inline-block; font-size: 1.1rem; font-weight: 700; color: #8B2020; letter-spacing: 8px; padding: 4px 20px; border-top: 1px solid rgba(139,80,30,0.25); border-bottom: 1px solid rgba(139,80,30,0.25); }
+        .yj-body { padding: 18px 22px 16px; position: relative; z-index: 1; border-bottom: 1px solid rgba(139,100,40,0.15); }
+        .yj-body::before { content: '── 草本靈魂全息解析 ──'; display: block; text-align: center; font-size: 0.58rem; color: rgba(139,80,30,0.38); letter-spacing: 3px; margin-bottom: 12px; }
+        .yj-persona-row { display: flex; align-items: baseline; justify-content: center; gap: 8px; margin-bottom: 14px; }
+        .yj-persona-label { font-size: 0.68rem; color: #8B5020; letter-spacing: 2px; }
+        .yj-persona-name { font-size: 1.2rem; font-weight: 900; color: #3A1A0A; letter-spacing: 2px; }
+        .yj-stat-row { display: grid; grid-template-columns: 52px 1fr 36px; align-items: center; gap: 8px; margin-bottom: 10px; }
+        .yj-stat-label { font-size: 0.68rem; color: #5C3010; letter-spacing: 1px; text-align: right; }
+        .yj-bar-track { height: 7px; background: rgba(139,100,40,0.15); border-radius: 4px; overflow: hidden; }
+        .yj-bar-fill { height: 100%; border-radius: 4px; transition: width 1.4s cubic-bezier(0.2,0.8,0.3,1); width: 0%; }
+        .yj-stat-pct { font-size: 0.72rem; font-weight: 700; color: #5C1A1A; text-align: right; }
+        .yj-quote { padding: 14px 28px; text-align: center; position: relative; z-index: 1; border-bottom: 1px solid rgba(139,100,40,0.15); }
+        .yj-quote-poem { font-size: 0.9rem; color: #5C1A1A; letter-spacing: 3px; font-weight: 700; margin-bottom: 6px; }
+        .yj-quote-desc { font-size: 0.75rem; color: #7A4020; line-height: 1.75; letter-spacing: 1px; }
+        .yj-products { padding: 14px 18px 18px; position: relative; z-index: 1; }
+        .yj-products-title { text-align: center; font-size: 0.6rem; color: rgba(139,80,30,0.45); letter-spacing: 5px; margin-bottom: 12px; }
+        .yj-product-card { background: rgba(255,255,255,0.55); border: 1px solid rgba(139,100,40,0.2); border-radius: 8px; padding: 14px 12px 12px; display: flex; align-items: center; gap: 12px; position: relative; margin-bottom: 10px; }
+        .yj-product-left { display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0; }
+        .yj-product-btn-wrap { display: flex; align-items: center; flex-shrink: 0; }
+        .yj-product-rank { position: absolute; top: -9px; left: 12px; background: #8B2020; color: #FFE080; font-size: 0.58rem; font-weight: 700; padding: 2px 10px; border-radius: 10px; letter-spacing: 2px; }
+        .yj-product-icon { width: 52px; height: 52px; border-radius: 6px; background: rgba(139,100,40,0.08); flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 20px; border: 1px solid rgba(139,100,40,0.15); overflow: hidden; }
+        .yj-product-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .yj-product-info { flex: 1; min-width: 0; }
+        .yj-product-name { font-size: 0.88rem; font-weight: 700; color: #3A1A0A; margin-bottom: 3px; }
+        .yj-product-poem { font-size: 0.7rem; color: #7A4020; letter-spacing: 1px; font-style: italic; line-height: 1.5; margin-bottom: 6px; }
+        .yj-product-btn { display: inline-block; font-size: 0.72rem; font-weight: 700; color: #8B2020; letter-spacing: 1px; text-decoration: none; font-family: inherit; padding: 6px 12px; border: 1px solid rgba(139,32,32,0.3); border-radius: 14px; white-space: nowrap; }
+        .yj-footer { padding: 14px 24px 18px; text-align: center; position: relative; z-index: 1; border-top: 1px solid rgba(139,100,40,0.15); }
+        .yj-footer-motto { font-size: 0.78rem; color: #5C1A1A; letter-spacing: 2px; font-weight: 500; margin-bottom: 8px; line-height: 1.8; }
+        .yj-footer-text { font-size: 0.58rem; color: rgba(139,80,30,0.38); letter-spacing: 2px; }
     </style>
 </head>
 <body>
@@ -953,6 +1078,16 @@
             <div class="advice-content" id="res-advice"></div>
         </div>
 
+        <button class="btn-yaojian" onclick="showYaojian()">
+            ✦ 領取我的漢方藥籤
+        </button>
+
+        <div class="share-row">
+            <button class="btn-share" onclick="shareResult()">
+                <span>🔗</span> 分享結果
+            </button>
+        </div>
+
         <div class="result-website-card">
             <div class="website-card-inner">
                 <div class="website-card-left">
@@ -964,14 +1099,100 @@
             </div>
         </div>
 
-        <div class="share-row">
-            <button class="btn-share" onclick="shareResult()">
-                <span>🔗</span> 分享結果
-            </button>
-        </div>
-
         <button class="btn-retry" onclick="location.reload()">↺ 重新進行體質檢測</button>
     </div>
+
+    <!-- ═══════════ SHAKE PAGE ═══════════ -->
+    <div id="shake-page" class="page">
+        <div class="shake-wrap">
+            <div class="shake-top">
+                <div class="shake-label">惟元蔘藥</div>
+                <div class="shake-title">漢方藥籤</div>
+            </div>
+            <div class="shake-body">
+                <div class="shake-hint" id="shake-hint">請搖一搖，抽取你的專屬藥籤</div>
+                <div class="shake-cup-wrap" id="shake-cup-wrap" onclick="triggerShake()">
+                    <div class="shake-cup" id="shake-cup">
+                        <div class="cup-body">
+                            <div class="cup-rim"></div>
+                            <div class="cup-inner">
+                                <div class="stick s1"></div>
+                                <div class="stick s2"></div>
+                                <div class="stick s3"></div>
+                                <div class="stick s4"></div>
+                                <div class="stick s5"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="shake-sub" id="shake-sub">搖晃手機 或 點擊籤筒</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════ YAOJIAN PAGE ═══════════ -->
+    <div id="yaojian-page" class="page">
+
+        <div class="yj-wrap">
+
+            <!-- 頂部紅色橫幅 -->
+            <div class="yj-header">
+                <div class="yj-brand">惟元蔘藥</div>
+                <div class="yj-title">漢方藥籤</div>
+            </div>
+
+            <!-- 籤號區 -->
+            <div class="yj-number-zone">
+                <div class="yj-num-row">
+                    <span class="yj-num-label">第</span>
+                    <span class="yj-num" id="yj-num">—</span>
+                    <span class="yj-num-label">首</span>
+                </div>
+                <div class="yj-luck" id="yj-luck">◈ &nbsp; 吉 &nbsp; ◈</div>
+            </div>
+
+            <!-- 體質名 + 三條進度條 -->
+            <div class="yj-body">
+                <div class="yj-persona-row">
+                    <span class="yj-persona-label">你的草本靈魂</span>
+                    <span class="yj-persona-name" id="yj-persona-name">—</span>
+                </div>
+                <div class="yj-stats" id="yj-stats"></div>
+            </div>
+
+            <!-- 籤詩引言 -->
+            <div class="yj-quote">
+                <div class="yj-quote-poem" id="yj-poem">—</div>
+                <div class="yj-quote-desc" id="yj-desc">—</div>
+            </div>
+
+            <!-- 商品卡 -->
+            <div class="yj-products">
+                <div class="yj-products-title">── 專屬漢方藥方 ──</div>
+                <div id="yj-cards"></div>
+            </div>
+
+            <!-- 底部格言 -->
+            <div class="yj-footer">
+                <div class="yj-footer-motto">養生之路，始於念；專業為引，盡在惟元。</div>
+                <div class="yj-footer-text">本籤僅供參考，不作為醫療診斷依據</div>
+            </div>
+
+        </div>
+
+        <div class="result-website-card" style="margin-top:14px;">
+            <div class="website-card-inner">
+                <div class="website-card-left">
+                    <div class="website-label">官方網站</div>
+                    <div class="website-name">惟元蔘藥</div>
+                    <div class="website-desc">有機中藥 · 人蔘燕窩 · 漢方生活</div>
+                </div>
+                <a href="https://www.wyginseng.com" target="_blank" class="btn-website">前往官網 →</a>
+            </div>
+        </div>
+        <button class="btn-back-result" onclick="showPage('result-page')">← 返回結果頁</button>
+    </div>
+
 
 </div>
 
@@ -1145,7 +1366,16 @@ function renderQuestion(idx, reverse = false) {
         const btn = document.createElement('button');
         btn.className = 'btn-opt';
         btn.innerHTML = `<div class="opt-badge">${BADGE[i]}</div><span>${o.t}</span>`;
-        btn.addEventListener('click', () => handleAnswer(o.s, btn));
+        let _fired = false;
+        btn.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            if (_fired) return; _fired = true;
+            handleAnswer(o.s, btn);
+        }, { passive: false });
+        btn.addEventListener('click', () => {
+            if (_fired) return;
+            handleAnswer(o.s, btn);
+        });
         wrap.appendChild(btn);
     });
 
@@ -1298,6 +1528,17 @@ function showResult() {
     window._resultColor = main.c;
     window._resultAdv   = [main.main, mainK !== subK ? sub.sub : '', main.adv].filter(Boolean).join('');
     window._resultStats = combined; // [{key, pct}]
+
+    // 立即預生成藥籤資料（不需等使用者進入藥籤頁）
+    const _mainKey = sorted[0][0];
+    const _slip    = slipData[_mainKey];
+    const [_lo, _hi] = _slip.numRange;
+    window._slipCache = {
+        num:  Math.floor(Math.random() * (_hi - _lo + 1)) + _lo,
+        luck: ['大吉','吉','小吉'][Math.floor(Math.random() * 3)],
+        poem: _slip.poem,
+        desc: _slip.desc,
+    };
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -1347,51 +1588,82 @@ async function buildShareDiv() {
     const imgUrl = window._resultImg   || '';
     const adv    = window._resultAdv   || '';
     const stats  = window._resultStats || [];
+    const cardW  = 375;
 
-    const FOREST = '#2E4230', GOLD = '#B8955A', PARCHMENT = '#F7F3EC';
-    const MIST = '#EAE6DC', SAGE = '#3D5C3A';
-    const cardW = 375;
-    const roleMap = ['顯性靈魂','隱性基因','潛在因子'];
+    // 取藥籤資料
+    const mainKey = stats[0] ? stats[0].key : 'ping';
+    const slip    = window._slipCache || {};
+    const slipNum  = slip.num  || '—';
+    const slipLuck = slip.luck || '吉';
+    const slipPoem = slip.poem || '';
+    const slipDesc = slip.desc || '';
 
-    const statsHtml = stats.map(({ key, pct }, i) => {
+    const FOREST = '#2E4230', GOLD = '#B8955A', PARCHMENT = '#F5EDD8';
+    const RED = '#8B2020', MIST = '#EAE6DC';
+    const roleLabels = ['顯性','隱性','潛在'];
+
+    const statsHtml = stats.map(({key, pct}, i) => {
         const p = personaData[key];
-        return `
-        <div style="margin-bottom:14px;">
-            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:5px;">
-                <span style="font-size:14px;font-weight:700;color:#1E2A1E;">${p.e} ${p.n}</span>
-                <span style="font-size:11px;color:#999;margin-right:auto;margin-left:6px;">${roleMap[i]}</span>
-                <span style="font-size:15px;font-weight:700;color:${FOREST};">${pct}%</span>
+        return `<div style="margin-bottom:5px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2px;">
+                <span style="font-size:9px;font-weight:700;color:#1E2A1E;">${p.e} ${p.n} <span style="font-size:8px;color:#999;font-weight:400;">${roleLabels[i]}</span></span>
+                <span style="font-size:9px;font-weight:700;color:${FOREST};">${pct}%</span>
             </div>
-            <div style="height:8px;background:${MIST};border-radius:4px;overflow:hidden;">
-                <div style="height:100%;width:${pct}%;background:${p.c};border-radius:4px;"></div>
+            <div style="height:5px;background:${MIST};border-radius:3px;overflow:hidden;">
+                <div style="height:100%;width:${pct}%;background:${p.c};border-radius:3px;"></div>
             </div>
         </div>`;
     }).join('');
 
     const wrap = document.createElement('div');
-    wrap.style.cssText = `position:fixed;left:-9999px;top:0;width:${cardW}px;background:${PARCHMENT};font-family:'PingFang TC','Noto Sans TC',sans-serif;padding:12px;box-sizing:border-box;`;
+    wrap.style.cssText = `position:fixed;left:-9999px;top:0;width:${cardW}px;font-family:'PingFang TC','Noto Sans TC',serif;background:${PARCHMENT};box-sizing:border-box;`;
 
     wrap.innerHTML = `
-        <div style="background:${FOREST};border-radius:18px;padding:22px 20px 16px;text-align:center;margin-bottom:10px;">
-            <div style="font-size:11px;color:${GOLD};letter-spacing:4px;margin-bottom:8px;font-weight:500;">漢方全息掃描完成</div>
-            <div style="font-size:12px;color:rgba(255,255,255,0.45);letter-spacing:2px;margin-bottom:6px;">你的草本靈魂是</div>
-            <div style="font-size:28px;font-weight:900;color:#fff;letter-spacing:2px;margin-bottom:10px;">${name}</div>
-            <div style="width:32px;height:2px;background:${GOLD};margin:0 auto 14px;"></div>
-            <img src="${imgUrl}" crossorigin="anonymous"
-                 style="width:100%;display:block;border-radius:12px;object-fit:cover;"
-                 onerror="this.style.display='none'">
+        <div style="background:${FOREST};padding:12px 20px 12px;text-align:center;position:relative;overflow:hidden;">
+            <div style="position:absolute;width:200px;height:200px;border-radius:50%;border:1px solid rgba(184,149,90,0.1);top:-80px;right:-60px;"></div>
+            <div style="font-size:9px;color:${GOLD};letter-spacing:4px;margin-bottom:3px;">漢方全息掃描完成</div>
+            <div style="font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:2px;margin-bottom:3px;">你的草本靈魂是</div>
+            <div style="font-size:18px;font-weight:900;color:#fff;letter-spacing:2px;margin-bottom:7px;">${name}</div>
+            <div style="width:24px;height:2px;background:${GOLD};margin:0 auto;"></div>
         </div>
-        <div style="background:#fff;border-radius:14px;padding:16px;margin-bottom:10px;">
-            <div style="font-size:11px;font-weight:700;color:${SAGE};letter-spacing:3px;margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid ${MIST};">能量構成分析</div>
-            ${statsHtml}
+
+        <div style="display:flex;background:#fff;padding:14px;gap:12px;align-items:stretch;">
+            <div style="width:120px;border-radius:10px;overflow:hidden;flex-shrink:0;background:#eee;align-self:stretch;min-height:130px;">
+                <img src="${imgUrl}" crossorigin="anonymous"
+                     style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;min-height:130px;"
+                     onerror="this.parentElement.style.background='${FOREST}';this.style.display='none'">
+            </div>
+            <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:8px;">
+                <div>
+                    <div style="font-size:8px;color:#3D5C3A;letter-spacing:3px;font-weight:700;padding-bottom:5px;border-bottom:1px solid ${MIST};margin-bottom:4px;">能量構成分析</div>
+                    ${statsHtml}
+                </div>
+                <div style="background:#F7F3EC;border-left:2px solid ${GOLD};border-radius:0 6px 6px 0;padding:7px 8px;font-size:10px;color:#444;line-height:1.7;flex:1;">
+                    ${adv}
+                </div>
+            </div>
         </div>
-        <div style="background:#fff;border-radius:14px;padding:16px;margin-bottom:10px;">
-            <div style="font-size:11px;font-weight:700;color:${SAGE};letter-spacing:3px;margin-bottom:10px;padding-bottom:8px;border-bottom:1px solid ${MIST};">惟元悄悄話</div>
-            <div style="background:${PARCHMENT};border-left:3px solid ${GOLD};border-radius:0 8px 8px 0;padding:12px 12px 12px 14px;font-size:13px;line-height:1.85;color:#444;">${adv}</div>
+
+        <div style="background:${RED};padding:12px 20px 12px;text-align:center;">
+            <div style="font-size:13px;font-weight:900;color:#FFE080;letter-spacing:4px;">我的專屬漢方藥籤</div>
         </div>
-        <div style="background:${FOREST};border-radius:12px;padding:12px;text-align:center;">
-            <div style="font-size:13px;font-weight:600;color:${GOLD};letter-spacing:1px;">惟元蔘藥｜草本靈魂體質檢測</div>
-            <div style="font-size:11px;color:rgba(255,255,255,0.4);margin-top:3px;">${location.hostname || 'weeiywun.github.io'}</div>
+
+        <div style="background:${PARCHMENT};padding:12px 20px 10px;text-align:center;position:relative;">
+            <div style="position:absolute;left:14px;top:10px;font-size:9px;color:rgba(139,80,30,0.2);letter-spacing:3px;">☰ ☷</div>
+            <div style="position:absolute;right:14px;top:10px;font-size:9px;color:rgba(139,80,30,0.2);letter-spacing:3px;">☵ ☲</div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:6px;">
+                <span style="font-size:13px;color:#8B5020;font-weight:500;">第</span>
+                <span style="font-size:44px;font-weight:900;color:#5C1A1A;line-height:1;">${slipNum}</span>
+                <span style="font-size:13px;color:#8B5020;font-weight:500;">首</span>
+            </div>
+            <div style="display:inline-block;font-size:13px;font-weight:700;color:${RED};letter-spacing:6px;padding:3px 16px;border-top:1px solid rgba(139,80,30,0.25);border-bottom:1px solid rgba(139,80,30,0.25);margin-bottom:8px;">◈ &nbsp; ${slipLuck} &nbsp; ◈</div>
+            <div style="font-size:11px;color:#5C1A1A;letter-spacing:2px;font-weight:700;margin-bottom:4px;">「${slipPoem}」</div>
+            <div style="font-size:9px;color:#7A4020;line-height:1.65;letter-spacing:1px;">${slipDesc}</div>
+        </div>
+
+        <div style="background:${PARCHMENT};padding:8px 20px 10px;text-align:center;border-top:1px solid rgba(139,100,40,0.12);">
+            <div style="font-size:8px;color:#5C1A1A;letter-spacing:1px;margin-bottom:3px;">養生之路，始於念；專業為引，盡在惟元。</div>
+            <div style="font-size:7px;color:rgba(139,80,30,0.35);letter-spacing:1px;">本籤僅供參考，不作為醫療診斷依據 · wyginseng.com</div>
         </div>
     `;
 
@@ -1414,13 +1686,11 @@ async function buildShareDiv() {
         width: cardW,
         windowWidth: cardW,
         scrollX: 0, scrollY: 0,
-        x: 0, y: 0,
     });
 
     document.body.removeChild(wrap);
     return new Promise(res => canvas.toBlob(res, 'image/png'));
 }
-
 
 function copyCode() {
     const code = 'WEIYUAN88';
@@ -1445,6 +1715,188 @@ function showToast(msg) {
     document.body.appendChild(t);
     setTimeout(() => t.remove(), 2500);
 }
+/* ─────────────────────────────────────────────────────────────
+   SHAKE INTERACTION
+───────────────────────────────────────────────────────────── */
+let _shakeTriggered = false;
+let _motionHandler = null;
+
+function initShake() {
+    _shakeTriggered = false;
+    const wrap = document.getElementById('shake-cup-wrap');
+    if (wrap) wrap.classList.remove('triggered');
+    const cup = document.getElementById('shake-cup');
+    if (cup) { cup.classList.remove('shaking','done'); }
+
+    // 嘗試監聽手機搖晃
+    if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+        // iOS 13+ 需要請求權限
+        DeviceMotionEvent.requestPermission().then(state => {
+            if (state === 'granted') listenMotion();
+        }).catch(() => {});
+    } else if (window.DeviceMotionEvent) {
+        listenMotion();
+    }
+}
+
+function listenMotion() {
+    let lastAcc = 0;
+    _motionHandler = (e) => {
+        const acc = e.accelerationIncludingGravity;
+        if (!acc) return;
+        const total = Math.abs(acc.x||0) + Math.abs(acc.y||0) + Math.abs(acc.z||0);
+        const delta = Math.abs(total - lastAcc);
+        lastAcc = total;
+        if (delta > 25) triggerShake();
+    };
+    window.addEventListener('devicemotion', _motionHandler);
+}
+
+function triggerShake() {
+    if (_shakeTriggered) return;
+    _shakeTriggered = true;
+
+    // 停止偵測搖晃
+    if (_motionHandler) {
+        window.removeEventListener('devicemotion', _motionHandler);
+        _motionHandler = null;
+    }
+
+    const wrap = document.getElementById('shake-cup-wrap');
+    const cup  = document.getElementById('shake-cup');
+    const hint = document.getElementById('shake-hint');
+    const sub  = document.getElementById('shake-sub');
+
+    if (wrap) wrap.classList.add('triggered');
+    if (hint) hint.textContent = '抽籤中...';
+    if (sub)  sub.textContent  = '';
+
+    // 播放搖動動畫
+    if (cup) {
+        cup.classList.add('shaking');
+        setTimeout(() => {
+            cup.classList.remove('shaking');
+            cup.classList.add('done');
+            // 切換到藥籤頁
+            setTimeout(() => {
+                doShowYaojian();
+            }, 400);
+        }, 1200);
+    } else {
+        doShowYaojian();
+    }
+}
+
+
+
+/* ─────────────────────────────────────────────────────────────
+   YAOJIAN DATA
+───────────────────────────────────────────────────────────── */
+const slipData = {
+    ping:    { numRange:[1,9],   poem:'百草之首，長青氣韻護本元',         desc:'此籤宜持之以恆。每日一飲，助您在繁忙中依然保有睿智與幹勁底氣。' },
+    qi:      { numRange:[10,18], poem:'固表培元氣，護身御外敵。',         desc:'此籤宜溫養防風。適量補充黃耆，讓您的防禦滿格，自信面對各種挑戰。' },
+    yang:    { numRange:[19,27], poem:'寒從足底生，溫自內而發',           desc:'此籤宜補陽驅寒。讓肉桂的熱力為您通經活絡，身暖了，運也就來了。' },
+    yin:     { numRange:[28,36], poem:'明眸善睞神光聚，滋陰潤燥自清靈。', desc:'此籤宜靜心滋潤。日日枸杞，潤澤雙眼與心靈，找回那份純淨靈氣。' },
+    tan:     { numRange:[37,45], poem:'一身輕盈雲霧散，利水清流除濕煩。', desc:'此籤宜斷捨離。讓茯苓助您管理水分，告別浮腫與沉重，重拾輕盈身軀。' },
+    heat:    { numRange:[46,54], poem:'去火降濁氣，明目自在行。',         desc:'此籤宜清熱淨化。讓決明子為您掃濁氣，視線清晰，方向也就不會迷失。' },
+    xue:     { numRange:[55,63], poem:'面若桃花映，紅潤潤芳華。',         desc:'此籤宜養血補養。每日紅棗給予身體紅潤應援，精神奕奕。' },
+    yu:      { numRange:[64,72], poem:'清風拂過機靈動，解鬱寬心氣自通。', desc:'此籤宜順氣開懷。聞一抹青草香，讓緊繃的思緒隨風而去，生活自然舒暢。' },
+    special: { numRange:[73,81], poem:'百草皆靈成萬象，平衡調和福壽長。', desc:'此籤宜中庸之道。百草交互應援，守護您體質的全面平衡，萬事皆順心。' },
+};
+
+const productData = {
+    ping:    { name:'蔘茶禮盒',       poem:'職人嚴選人蔘入料，經典風味',     img:'https://weeiywun.github.io/herbal-type/ping-product.jpg', url:'https://www.wyginseng.com/categories/ginseng-tea-present-box' },
+    qi:      { name:'膜莢黃耆茶 調理包', poem:'正品黃耆與寧夏枸杞的邂逅',   img:'https://weeiywun.github.io/herbal-type/qi-product.jpg', url:'https://www.wyginseng.com/products/astragalus-root-1' },
+    yang:    { name:'特級油桂粉',      poem:'為你的早晨增添風味',             img:'https://weeiywun.github.io/herbal-type/yang-product.jpg', url:'https://www.wyginseng.com/products/cinnamon-powder' },
+    yin:     { name:'有機枸杞',        poem:'天然鮮甜，純淨有機',             img:'https://weeiywun.github.io/herbal-type/yin-product.jpg', url:'https://www.wyginseng.com/products/organic-goji-berries' },
+    tan:     { name:'袪濕輕盈纖美茶',  poem:'微酸滋味，日常補水好幫手',       img:'https://weeiywun.github.io/herbal-type/tan-product.jpg', url:'https://www.wyginseng.com/products/herb-tea-07' },
+    heat:    { name:'杞菊炯炯決明茶',  poem:'菊香四溢的經典保養',             img:'https://weeiywun.github.io/herbal-type/heat-product.jpg', url:'https://www.wyginseng.com/products/goji-chrysanthemum-herbal-tea' },
+    xue:     { name:'有機紅棗',        poem:'純淨首選，果肉扎實不甜膩',       img:'https://weeiywun.github.io/herbal-type/xue-product.jpg', url:'https://www.wyginseng.com/products/organicreddates' },
+    yu:      { name:'金銀魚腥七葉茶',  poem:'舒暢清爽，冷泡更對味',           img:'https://weeiywun.github.io/herbal-type/yu-product.jpg', url:'https://www.wyginseng.com/products/metabolic-cycling-herbal-tea' },
+    special: { name:'經典養生元氣茶',  poem:'經典配方永流傳',                 img:'https://weeiywun.github.io/herbal-type/special-product.jpg', url:'https://www.wyginseng.com/products/herb-tea-06' },
+};
+
+const LUCK_LIST = ['大吉', '吉', '小吉'];
+const RANK_LABELS = ['主 方', '副 方', '從 方'];
+
+/* ─────────────────────────────────────────────────────────────
+   SHOW YAOJIAN
+───────────────────────────────────────────────────────────── */
+function showYaojian() {
+    // 先顯示搖籤筒動畫頁
+    showPage('shake-page');
+    initShake();
+    return; // 實際顯示邏輯移到 doShowYaojian()
+}
+
+function doShowYaojian() {
+    const stats  = window._resultStats || [];
+    if (!stats.length) return;
+
+    const mainKey = stats[0].key;
+    const slip    = slipData[mainKey];
+
+    // 直接讀 showResult 預生成的藥籤，確保分享卡與藥籤頁一致
+    const cache = window._slipCache || {};
+    const num  = cache.num  || Math.floor(Math.random() * (slip.numRange[1]-slip.numRange[0]+1)) + slip.numRange[0];
+    const luck = cache.luck || '吉';
+    window._slipCache = { num, luck, poem: slip.poem, desc: slip.desc };
+
+    // 籤號 & 吉凶
+    document.getElementById('yj-num').textContent  = num;
+    document.getElementById('yj-luck').innerHTML   = `◈ &nbsp; ${luck} &nbsp; ◈`;
+    document.getElementById('yj-persona-name').textContent = personaData[mainKey].e + ' ' + personaData[mainKey].n;
+    document.getElementById('yj-poem').textContent = `「${slip.poem}」`;
+    document.getElementById('yj-desc').textContent = slip.desc;
+
+    // 進度條
+    const roleLabels = ['顯性靈魂', '隱性基因', '潛在因子'];
+    const statsHtml = stats.map(({key, pct}, i) => {
+        const p = personaData[key];
+        return `
+        <div class="yj-stat-row">
+            <div class="yj-stat-label">${roleLabels[i]}</div>
+            <div class="yj-bar-track">
+                <div class="yj-bar-fill" style="width:0%;background:${p.c};" data-pct="${pct}"></div>
+            </div>
+            <div class="yj-stat-pct">${pct}%</div>
+        </div>`;
+    }).join('');
+    document.getElementById('yj-stats').innerHTML = statsHtml;
+
+    // 商品卡（依主副從體質對應商品）
+    const cardsHtml = stats.map(({key}, i) => {
+        const prod = productData[key];
+        const p    = personaData[key];
+        const icon = prod.img
+            ? `<img src="${prod.img}" alt="${prod.name}">`
+            : `<span style="font-size:22px;">${p.e}</span>`;
+        return `
+        <div class="yj-product-card">
+            <div class="yj-product-rank">${RANK_LABELS[i]}</div>
+            <div class="yj-product-icon">${icon}</div>
+            <div class="yj-product-info">
+                <div class="yj-product-name">${prod.name}</div>
+                <div class="yj-product-poem">「${prod.poem}」</div>
+            </div>
+            <div class="yj-product-btn-wrap">
+                <a class="yj-product-btn" href="${prod.url}" target="_blank">前往選購 →</a>
+            </div>
+        </div>`;
+    }).join('');
+    document.getElementById('yj-cards').innerHTML = cardsHtml;
+
+    // showPage handled by doShowYaojian
+    showPage('yaojian-page');;
+
+    // 進度條動畫（頁面切換後觸發）
+    setTimeout(() => {
+        document.querySelectorAll('.yj-bar-fill').forEach(bar => {
+            bar.style.width = bar.dataset.pct + '%';
+        });
+    }, 150);
+}
+
 </script>
 </body>
 </html>
