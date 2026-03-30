@@ -1795,12 +1795,45 @@ async function buildShareDiv() {
     return new Promise(res => canvas.toBlob(res, 'image/png'));
 }
 
-function copyCode() {
-    const code = 'WEIYUAN88';
-    if(navigator.clipboard) {
-        navigator.clipboard.writeText(code).then(() => showToast('折扣碼已複製：' + code));
-    } else {
-        showToast('折扣碼：' + code);
+function copyCode() { copyPromoCode(); }
+
+function copyPromoCode() {
+    const code = 'wyginseng2026';
+    const onSuccess = () => showToast('折扣碼已複製！');
+    const onFail    = () => showToast('折扣碼：' + code);
+
+    // 1. 現代 Clipboard API（HTTPS 環境）
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(code)
+            .then(onSuccess)
+            .catch(() => _execCmdCopy(code, onSuccess, onFail));
+        return;
+    }
+    // 2. 舊版 / 非 HTTPS fallback
+    _execCmdCopy(code, onSuccess, onFail);
+}
+
+function _execCmdCopy(text, onSuccess, onFail) {
+    try {
+        const el = document.createElement('textarea');
+        el.value = text;
+        el.setAttribute('readonly', '');
+        el.style.cssText = 'position:fixed;top:-9999px;left:-9999px;opacity:0;font-size:16px;';
+        document.body.appendChild(el);
+        // iOS 需要 setSelectionRange
+        el.contentEditable = true;
+        el.readOnly = false;
+        const range = document.createRange();
+        range.selectNodeContents(el);
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        el.setSelectionRange(0, text.length);
+        const ok = document.execCommand('copy');
+        document.body.removeChild(el);
+        ok ? onSuccess() : onFail();
+    } catch(e) {
+        onFail();
     }
 }
 
