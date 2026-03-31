@@ -5,6 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>惟元蔘藥｜草本靈魂檢測</title>
     <link rel="icon" type="image/png" href="https://duk.tw/9kW5aQ.png">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-T9N16QC52F"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-T9N16QC52F');
+
+        // 自訂事件輔助函式
+        function gaEvent(name, params) {
+            if (typeof gtag !== 'undefined') {
+                gtag('event', name, params || {});
+            }
+        }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
@@ -1215,11 +1231,11 @@
                     <div class="website-name">惟元蔘藥</div>
                     <div class="website-desc">有機中藥 · 人蔘燕窩 · 漢方生活</div>
                 </div>
-                <a href="https://www.wyginseng.com" target="_blank" class="btn-website">前往官網 →</a>
+                <a href="https://www.wyginseng.com" target="_blank" class="btn-website" onclick="gaEvent('website_click',{event_category:'engagement'})">前往官網 →</a>
             </div>
         </div>
 
-        <button class="btn-retry" onclick="location.reload()">↺ 重新進行體質檢測</button>
+        <button class="btn-retry" onclick="gaEvent('quiz_retry',{event_category:'quiz'});location.reload()">↺ 重新進行體質檢測</button>
     </div>
 
     <!-- ═══════════ SHAKE PAGE ═══════════ -->
@@ -1307,7 +1323,7 @@
                     <div class="website-name">惟元蔘藥</div>
                     <div class="website-desc">有機中藥 · 人蔘燕窩 · 漢方生活</div>
                 </div>
-                <a href="https://www.wyginseng.com" target="_blank" class="btn-website">前往官網 →</a>
+                <a href="https://www.wyginseng.com" target="_blank" class="btn-website" onclick="gaEvent('website_click',{event_category:'engagement'})">前往官網 →</a>
             </div>
         </div>
         <button class="btn-back-result" onclick="showPage('result-page')">← 返回結果頁</button>
@@ -1434,6 +1450,7 @@ function showPage(id) {
    INTRO → QUIZ
 ───────────────────────────────────────────────────────────── */
 function startQuiz() {
+    gaEvent('quiz_start', { event_category: 'quiz' });
     buildStepTrack();
     renderQuestion(0);
     showPage('quiz-page');
@@ -1508,6 +1525,9 @@ function renderQuestion(idx, reverse = false) {
    HANDLE ANSWER
 ───────────────────────────────────────────────────────────── */
 function handleAnswer(scoreObj, btn) {
+    const qLabel = 'Q' + (currentIdx + 1);
+    const optText = btn.querySelector('span') ? btn.querySelector('span').textContent.trim().slice(0,30) : '';
+    gaEvent('quiz_question', { event_category: 'quiz', question: qLabel, option: optText });
     document.querySelectorAll('.btn-opt').forEach(b => b.disabled = true);
     btn.classList.add('selected');
 
@@ -1643,6 +1663,9 @@ function showResult() {
         });
     }, 200);
 
+    // GA4: 測驗完成
+    gaEvent('quiz_complete', { event_category: 'quiz', result: main.n });
+    gaEvent('quiz_result', { event_category: 'quiz', constitution: main.n, constitution_key: mainK });
     window._resultName  = main.n;
     window._resultEmoji = main.e;
     window._resultImg   = main.img;
@@ -1666,6 +1689,7 @@ function showResult() {
    SHARE — 隱藏 div 截圖法
 ───────────────────────────────────────────────────────────── */
 async function shareResult() {
+    gaEvent('share_click', { event_category: 'engagement' });
     const shareUrl = location.href;
     try {
         showToast('製作分享卡片中…');
@@ -1799,6 +1823,7 @@ function copyCode() { copyPromoCode(); }
 
 function copyPromoCode() {
     const code = 'wyginseng2026';
+    gaEvent('promo_copy', { event_category: 'engagement', promo_code: 'wyginseng2026' });
     const onSuccess = () => showToast('折扣碼已複製！');
     const onFail    = () => showToast('折扣碼：' + code);
 
@@ -1959,6 +1984,7 @@ const RANK_LABELS = ['主 方', '副 方', '從 方'];
    SHOW YAOJIAN
 ───────────────────────────────────────────────────────────── */
 function showYaojian() {
+    gaEvent('yaojian_open', { event_category: 'engagement' });
     // 先顯示搖籤筒動畫頁
     showPage('shake-page');
     initShake();
